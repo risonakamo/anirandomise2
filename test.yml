@@ -1,0 +1,6 @@
+itemspath: .
+completepath: ./completed
+
+log: true
+logfilepath: .
+logfilename: randomise.log
