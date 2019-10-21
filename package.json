@@ -7,7 +7,6 @@
     "lodash": "^4.17.15"
   },
   "scripts": {
-    "start":"node anirandomise2",
     "install-link": "npm-link lodash fs-extra"
   }
 }
