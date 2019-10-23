@@ -1,0 +1,15 @@
+# set of detected videos
+type VidSet
+{
+    # the simplified file name mapped to an array of filenames corresponding
+    # to that simplified name
+    [simplifiedName]: [string]
+}
+
+# directory entry, from readdirsync
+type Dirent
+{
+    name: string,
+    # returns true if it is a file
+    isFile(): function
+}

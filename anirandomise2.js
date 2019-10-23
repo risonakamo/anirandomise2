@@ -2,6 +2,8 @@ const _=require("lodash");
 const yaml=require("js-yaml");
 const fs=require("fs-extra");
 const path=require("path");
+const child_process=require("child_process");
+const chalk=require("chalk");
 
 function main()
 {
@@ -48,14 +50,11 @@ function main()
 
     var vidset=convertVidSet(dirItems);
 
-    console.log(vidset);
+    printVidSet(vidset);
+    selectVid(vidset,config.itemspath);
 }
 
-//given a readdir array, convert it into a vidset, a dict:
-/*{
-    [simplifiedName]: [string]  //array of file names corresponding to the
-                                //simplified name key
-  }*/
+//given a Type Dirent array from readdir, convert it into a Type VidSet, a dict:
 function convertVidSet(files)
 {
     var smallname;
@@ -104,6 +103,58 @@ function checkPaths(config)
     for (var x=0;x<configOptionsToCheck.length;x++)
     {
         fs.ensureDirSync(config[configOptionsToCheck[x]]);
+    }
+}
+
+// given a Type VidSet, choose and launch a file, itempath should be
+// path to the folder containing vids
+function selectVid(vidset,itempath)
+{
+    var choice=_.sample(_.keys(vidset));
+    var choiceArray=vidset[choice];
+    choiceArray.sort((a,b)=>{
+        if (a>b)
+        {
+            return 1;
+        }
+
+        return -1;
+    });
+
+    console.log();
+    console.log(`> ${chalk.green(choice)}`);
+
+    for (var x=0;x<choiceArray.length;x++)
+    {
+        if (!x)
+        {
+            console.log(`1. ${chalk.cyan(choiceArray[x])}`);
+        }
+
+        else
+        {
+            console.log(`${x+1}. ${choiceArray[x]}`);
+        }
+    }
+
+    // child_process.exec(`open "${path.normalize(`${itempath}/${choiceArray[0]}`)}"`);
+}
+
+// given Type VidSet print it out
+function printVidSet(vidset)
+{
+    var choices=_.keys(vidset).sort((a,b)=>{
+        if (a>b)
+        {
+            return 1;
+        }
+
+        return -1;
+    });
+
+    for (var x=0;x<choices.length;x++)
+    {
+        console.log(choices[x]);
     }
 }
 
