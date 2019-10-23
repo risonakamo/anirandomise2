@@ -4,6 +4,7 @@ const fs=require("fs-extra");
 const path=require("path");
 const child_process=require("child_process");
 const chalk=require("chalk");
+const moment=require("moment");
 
 function main()
 {
@@ -51,7 +52,12 @@ function main()
     var vidset=convertVidSet(dirItems);
 
     printVidSet(vidset);
-    selectVid(vidset,config.itemspath);
+    var selection=selectVid(vidset,config.itemspath);
+
+    if (config.log)
+    {
+        logToLog(path.normalize(`${config.logfilepath}/${config.logfilename}`),selection);
+    }
 }
 
 //given a Type Dirent array from readdir, convert it into a Type VidSet, a dict:
@@ -107,7 +113,7 @@ function checkPaths(config)
 }
 
 // given a Type VidSet, choose and launch a file, itempath should be
-// path to the folder containing vids
+// path to the folder containing vids, returns the filename selected
 function selectVid(vidset,itempath)
 {
     var choice=_.sample(_.keys(vidset));
@@ -138,6 +144,8 @@ function selectVid(vidset,itempath)
     }
 
     // child_process.exec(`open "${path.normalize(`${itempath}/${choiceArray[0]}`)}"`);
+
+    return choiceArray[0];
 }
 
 // given Type VidSet print it out
@@ -156,6 +164,13 @@ function printVidSet(vidset)
     {
         console.log(choices[x]);
     }
+}
+
+//given a full logpath to a file and the name to log, do the log
+function logToLog(logpath,selectedVid)
+{
+    var outfile=fs.createWriteStream(logpath,{flags:"a"});
+    outfile.write(`${moment().format("YYYY-MM-DD HH:mm:ss")} ${selectedVid}\r\n`);
 }
 
 main();
