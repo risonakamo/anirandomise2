@@ -1,6 +1,7 @@
-itemspath: .
-completepath: ./completed
+# all fields are required, make a copy called config.yml
+itemspath: . # path to videos to choose from
+completepath: ./completed # path to move videos to after completion
 
-log: true
-logfilepath: .
-logfilename: randomise.log
+log: true # whether or not to log
+logfilepath: . # the path to the folder where the logfile will be stored
+logfilename: randomise.log # the name of the logfile

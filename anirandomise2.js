@@ -5,44 +5,12 @@ const path=require("path");
 const child_process=require("child_process");
 const chalk=require("chalk");
 const moment=require("moment");
+const commander=require("commander");
 
 function main()
 {
-    if (!fs.existsSync("config.yml"))
-    {
-        console.log("missing config.yml");
-        return;
-    }
-
-    var config=yaml.safeLoad(fs.readFileSync("config.yml"));
-
-    var requiredOptions={
-        "itemspath":"absolute path to folder where randomise will pick from",
-        "completepath":"absolute path to send completed items",
-        "log":"whether or not to log",
-        "logfilepath":"path to folder to place log file",
-        "logfilename":"name of logfile"
-    };
-
-    var missingOption;
-    var hadAllOptions=_.every(requiredOptions,(x,i)=>{
-        if (config[i])
-        {
-            return true;
-        }
-
-        missingOption=i;
-        return false;
-    });
-
-    if (!hadAllOptions)
-    {
-        console.log(`missing option: ${missingOption}`);
-        console.log(requiredOptions[missingOption]);
-        return;
-    }
-
-    checkPaths(config);
+    var args=handleArgs();
+    var config=getConfig();
 
     var dirItems=fs.readdirSync(config.itemspath,{withFileTypes:true});
     dirItems=_.filter(dirItems,(x)=>{
@@ -52,9 +20,9 @@ function main()
     var vidset=convertVidSet(dirItems);
 
     printVidSet(vidset);
-    var selection=selectVid(vidset,config.itemspath);
+    var selection=selectVid(vidset,config.itemspath,args.check);
 
-    if (config.log)
+    if (config.log && !args.check)
     {
         logToLog(path.normalize(`${config.logfilepath}/${config.logfilename}`),selection);
     }
@@ -113,8 +81,9 @@ function checkPaths(config)
 }
 
 // given a Type VidSet, choose and launch a file, itempath should be
-// path to the folder containing vids, returns the filename selected
-function selectVid(vidset,itempath)
+// path to the folder containing vids, returns the filename selected.
+// if check only is set, dont actually launch the file
+function selectVid(vidset,itempath,checkonly=false)
 {
     var choice=_.sample(_.keys(vidset));
     var choiceArray=vidset[choice];
@@ -143,7 +112,10 @@ function selectVid(vidset,itempath)
         }
     }
 
-    // child_process.exec(`open "${path.normalize(`${itempath}/${choiceArray[0]}`)}"`);
+    if (!checkonly)
+    {
+        child_process.exec(`open "${path.normalize(`${itempath}/${choiceArray[0]}`)}"`);
+    }
 
     return choiceArray[0];
 }
@@ -171,6 +143,58 @@ function logToLog(logpath,selectedVid)
 {
     var outfile=fs.createWriteStream(logpath,{flags:"a"});
     outfile.write(`${moment().format("YYYY-MM-DD HH:mm:ss")} ${selectedVid}\r\n`);
+}
+
+//return the args
+function handleArgs()
+{
+    commander
+    .option("-c, --check","output possible choices only");
+
+    commander.parse(process.argv);
+
+    return commander;
+}
+
+//try to get the config.yml which should be right next to the file
+function getConfig()
+{
+    if (!fs.existsSync("config.yml"))
+    {
+        console.log("missing config.yml");
+        process.exit();
+    }
+
+    var config=yaml.safeLoad(fs.readFileSync("config.yml"));
+
+    var requiredOptions={
+        "itemspath":"absolute path to folder where randomise will pick from",
+        "completepath":"absolute path to send completed items",
+        "log":"whether or not to log",
+        "logfilepath":"path to folder to place log file",
+        "logfilename":"name of logfile"
+    };
+
+    var missingOption;
+    var hadAllOptions=_.every(requiredOptions,(x,i)=>{
+        if (config[i])
+        {
+            return true;
+        }
+
+        missingOption=i;
+        return false;
+    });
+
+    if (!hadAllOptions)
+    {
+        console.log(`missing option: ${missingOption}`);
+        console.log(requiredOptions[missingOption]);
+        process.exit();
+    }
+
+    checkPaths(config);
+    return config;
 }
 
 main();
