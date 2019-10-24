@@ -6,6 +6,7 @@ const child_process=require("child_process");
 const chalk=require("chalk");
 const moment=require("moment");
 const commander=require("commander");
+const keypress=require("keypress");
 
 function main()
 {
@@ -26,6 +27,8 @@ function main()
     {
         logToLog(path.normalize(`${config.logfilepath}/${config.logfilename}`),selection);
     }
+
+    moveVid();
 }
 
 //given a Type Dirent array from readdir, convert it into a Type VidSet, a dict:
@@ -195,6 +198,21 @@ function getConfig()
 
     checkPaths(config);
     return config;
+}
+
+function moveVid()
+{
+    console.log("press Enter to move file to completed");
+    keypress(process.stdin);
+    // process.stdin.pause();
+
+    process.stdin.on("keypress",(ch,key)=>{
+        console.log("press:",key);
+        process.stdin.pause();
+    });
+
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
 }
 
 main();
