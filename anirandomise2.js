@@ -28,7 +28,10 @@ function main()
         logToLog(path.normalize(`${config.logfilepath}/${config.logfilename}`),selection);
     }
 
-    moveVid();
+    if (!args.check)
+    {
+        moveVid(selection,config.itemspath,config.completepath);
+    }
 }
 
 //given a Type Dirent array from readdir, convert it into a Type VidSet, a dict:
@@ -200,14 +203,22 @@ function getConfig()
     return config;
 }
 
-function moveVid()
+//prompts to do a video move
+//give it the filename of the video, the items dir path, and the
+//completed dir path
+function moveVid(videoName,itemspath,completedpath)
 {
-    console.log("press Enter to move file to completed");
+    console.log("press Enter to move file to completed, or any other key to cancel");
     keypress(process.stdin);
     // process.stdin.pause();
 
     process.stdin.on("keypress",(ch,key)=>{
-        console.log("press:",key);
+        if (key.name=="return")
+        {
+            console.log("moving");
+            fs.move(path.normalize(`${itemspath}/${videoName}`),path.normalize(`${completedpath}/${videoName}`));
+        }
+
         process.stdin.pause();
     });
 
