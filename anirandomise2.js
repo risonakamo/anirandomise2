@@ -165,13 +165,14 @@ function handleArgs()
 //try to get the config.yml which should be right next to the file
 function getConfig()
 {
-    if (!fs.existsSync("config.yml"))
+    var configPath=path.normalize(`${__dirname}/config.yml`);
+    if (!fs.existsSync(configPath))
     {
         console.log("missing config.yml");
         process.exit();
     }
 
-    var config=yaml.safeLoad(fs.readFileSync("config.yml"));
+    var config=yaml.safeLoad(fs.readFileSync(configPath));
 
     var requiredOptions={
         "itemspath":"absolute path to folder where randomise will pick from",
