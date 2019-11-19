@@ -120,7 +120,7 @@ function selectVid(vidset,itempath,checkonly=false)
 
     if (!checkonly)
     {
-        child_process.exec(`open "${path.normalize(`${itempath}/${choiceArray[0]}`)}"`);
+        child_process.exec(`cmd /c "${path.normalize(`${itempath}/${choiceArray[0]}`)}"`);
     }
 
     return choiceArray[0];
