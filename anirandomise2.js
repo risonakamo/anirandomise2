@@ -34,6 +34,11 @@ function main()
     }
 }
 
+function main2()
+{
+    console.log(getShorts());
+}
+
 //given a Type Dirent array from readdir, convert it into a Type VidSet, a dict:
 function convertVidSet(files)
 {
@@ -227,4 +232,19 @@ function moveVid(videoName,itemspath,completedpath)
     process.stdin.resume();
 }
 
-main();
+// attempts to read a shorts.yml file which should be next to the config yml. shorts.yml should
+// just be a list of short names that count as shorts. returns array of shorts.
+function getShorts()
+{
+    var shortsPath=path.normalize(`${__dirname}/shorts.yml`);
+
+    if (!fs.existsSync(shortsPath))
+    {
+        return [];
+    }
+
+    return yaml.safeLoad(fs.readFileSync(shortsPath));
+}
+
+// main();
+main2();
