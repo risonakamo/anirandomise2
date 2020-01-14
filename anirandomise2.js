@@ -12,6 +12,7 @@ function main()
 {
     var args=handleArgs();
     var config=getConfig();
+    var shorts=getShorts();
 
     var dirItems=fs.readdirSync(config.itemspath,{withFileTypes:true});
     dirItems=_.filter(dirItems,(x)=>{
@@ -20,7 +21,7 @@ function main()
 
     var vidset=convertVidSet(dirItems);
 
-    printVidSet(vidset);
+    printVidSet(vidset,shorts);
     var selection=selectVid(vidset,config.itemspath,args.check);
 
     if (config.log && !args.check)
@@ -32,11 +33,6 @@ function main()
     {
         moveVid(selection,config.itemspath,config.completepath);
     }
-}
-
-function main2()
-{
-    console.log(getShorts());
 }
 
 //given a Type Dirent array from readdir, convert it into a Type VidSet, a dict:
@@ -72,7 +68,7 @@ function simplifyName(name)
         return "";
     }
 
-    return name.replace(/\[.*?\]|\.mkv|\.mp4/g,"").replace(/[^\w]|\d/g,"").toLowerCase();
+    return name.replace(/[\[\(].*?[\]\)]|\.mkv|\.mp4/g,"").replace(/[^\w]|\d/g,"").toLowerCase();
 }
 
 //given the config, makes sure the paths exist by creating them
@@ -132,8 +128,10 @@ function selectVid(vidset,itempath,checkonly=false)
 }
 
 // given Type VidSet print it out
-function printVidSet(vidset)
+// give it a Shorts array to mark certain items as shorts
+function printVidSet(vidset,shorts=[])
 {
+    shorts=new Set(shorts);
     var choices=_.keys(vidset).sort((a,b)=>{
         if (a>b)
         {
@@ -145,7 +143,15 @@ function printVidSet(vidset)
 
     for (var x=0;x<choices.length;x++)
     {
-        console.log(choices[x]);
+        if (shorts.has(choices[x]))
+        {
+            console.log(choices[x]+"*");
+        }
+
+        else
+        {
+            console.log(choices[x]);
+        }
     }
 }
 
@@ -246,5 +252,4 @@ function getShorts()
     return yaml.safeLoad(fs.readFileSync(shortsPath));
 }
 
-// main();
-main2();
+main();

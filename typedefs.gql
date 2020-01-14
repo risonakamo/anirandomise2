@@ -13,3 +13,7 @@ type Dirent
     # returns true if it is a file
     isFile(): function
 }
+
+# shorts array, just a list of strings that are the short names of
+# items that are to be identified as shorts
+union Shorts=[string];
