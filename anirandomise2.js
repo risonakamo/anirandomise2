@@ -68,7 +68,14 @@ function simplifyName(name)
         return "";
     }
 
-    return name.replace(/[\[\(].*?[\]\)]|\.mkv|\.mp4/g,"").replace(/[^\w]|\d/g,"").toLowerCase();
+    var result=name.replace(/[\[\(].*?[\]\)]|\.mkv|\.mp4/g,"").replace(/[^\w]|\d/g,"").toLowerCase();
+
+    if (!result.length)
+    {
+        result="lengtherror";
+    }
+
+    return result;
 }
 
 //given the config, makes sure the paths exist by creating them
