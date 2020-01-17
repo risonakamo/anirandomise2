@@ -22,7 +22,7 @@ function main()
     var vidset=convertVidSet(dirItems);
 
     printVidSet(vidset,shorts);
-    var selection=selectVid(vidset,config.itemspath,args.check);
+    var selection=selectVid(vidset,config.itemspath,args.check,shorts);
 
     if (config.log && !args.check)
     {
@@ -97,8 +97,10 @@ function checkPaths(config)
 // given a Type VidSet, choose and launch a file, itempath should be
 // path to the folder containing vids, returns the filename selected.
 // if check only is set, dont actually launch the file
-function selectVid(vidset,itempath,checkonly=false)
+// give it an array of shorts to also check if the selection is a short
+function selectVid(vidset,itempath,checkonly=false,shorts=[])
 {
+    shorts=new Set(shorts);
     var choice=_.sample(_.keys(vidset));
     var choiceArray=vidset[choice];
     choiceArray.sort((a,b)=>{
@@ -109,6 +111,11 @@ function selectVid(vidset,itempath,checkonly=false)
 
         return -1;
     });
+
+    if (shorts.has(choice))
+    {
+        choice+="*";
+    }
 
     console.log();
     console.log(`> ${chalk.green(choice)}`);
