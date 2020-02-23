@@ -7,6 +7,7 @@ const chalk=require("chalk");
 const moment=require("moment");
 const commander=require("commander");
 const keypress=require("keypress");
+const randomNumber=require("random-number-csprng");
 
 function main()
 {
@@ -264,6 +265,12 @@ function getShorts()
     }
 
     return yaml.safeLoad(fs.readFileSync(shortsPath));
+}
+
+// does the same thing as sample, returning random item from an input array
+async function cspSample(dataarray)
+{
+    return dataarray[await randomNumber(0,dataarray.length-1)];
 }
 
 main();
