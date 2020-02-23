@@ -9,7 +9,7 @@ const commander=require("commander");
 const keypress=require("keypress");
 const randomNumber=require("random-number-csprng");
 
-function main()
+async function main()
 {
     var args=handleArgs();
     var config=getConfig();
@@ -23,7 +23,7 @@ function main()
     var vidset=convertVidSet(dirItems);
 
     printVidSet(vidset,shorts);
-    var selection=selectVid(vidset,config.itemspath,args.check,shorts);
+    var selection=await selectVid(vidset,config.itemspath,args.check,shorts);
 
     if (config.log && !args.check)
     {
@@ -99,10 +99,10 @@ function checkPaths(config)
 // path to the folder containing vids, returns the filename selected.
 // if check only is set, dont actually launch the file
 // give it an array of shorts to also check if the selection is a short
-function selectVid(vidset,itempath,checkonly=false,shorts=[])
+async function selectVid(vidset,itempath,checkonly=false,shorts=[])
 {
     shorts=new Set(shorts);
-    var choice=_.sample(_.keys(vidset));
+    var choice=await cspSample(_.keys(vidset));
     var choiceArray=vidset[choice];
     choiceArray.sort((a,b)=>{
         if (a>b)
