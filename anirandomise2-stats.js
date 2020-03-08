@@ -39,6 +39,7 @@ function recordStats(statsFilePath,choice,numberChoices)
 
     statsfile.choiceChances=choiceChances;
     statsfile.totals=calcTotals(choiceChances);
+    statsfile.averages=calcAverages(choiceChances);
 
     fs.outputJson(statsFilePath,statsfile,{spaces:4});
 }
@@ -57,6 +58,16 @@ function calcTotals(stats)
     },0);
 
     return vidtotals;
+}
+
+// give it choice chances object
+function calcAverages(stats)
+{
+    return _.mapValues(stats,(x)=>{
+        return _.reduce(x,(r,y)=>{
+            return r+y;
+        },0)/x.length;
+    });
 }
 
 function main()

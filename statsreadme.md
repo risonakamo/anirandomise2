@@ -11,6 +11,10 @@ interface StatsFile
         [choice:string]:number
         total:number
     }
+
+    averages:{
+        [choice:string]:number
+    }
 }
 
 type ChoiceChance=number;
