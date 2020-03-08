@@ -205,12 +205,14 @@ function getConfig()
         "completepath":"absolute path to send completed items",
         "log":"whether or not to log",
         "logfilepath":"path to folder to place log file",
-        "logfilename":"name of logfile"
+        "logfilename":"name of logfile",
+        "stats":"enable stats recording",
+        "statslocation":"where to place stats results, if enabled"
     };
 
     var missingOption;
     var hadAllOptions=_.every(requiredOptions,(x,i)=>{
-        if (config[i])
+        if (config[i]!=undefined)
         {
             return true;
         }
