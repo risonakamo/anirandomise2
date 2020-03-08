@@ -2,7 +2,7 @@ const _=require("lodash");
 const fs=require("fs-extra");
 
 // ASYNC
-/* attempt to record stats of choices into a file, specified by statsFilePath.*/
+//see statsreadme for how stats works
 function recordStats(statsFilePath,choice,numberChoices)
 {
     var statsfile;
