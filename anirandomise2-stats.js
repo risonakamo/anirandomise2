@@ -1,16 +1,19 @@
 const _=require("lodash");
-const yaml=require("js-yaml");
 const fs=require("fs-extra");
 
 // ASYNC
+/* attempt to record stats of choices into a file, specified by statsFilePath.*/
 function recordStats(statsFilePath,choice,numberChoices)
 {
     var statsfile;
     if (fs.existsSync(statsFilePath))
     {
-        statsfile=yaml.safeLoad(fs.readFileSync(statsFilePath));
+        try
+        {
+            statsfile=fs.readJsonSync(statsFilePath);
+        }
 
-        if (!statsfile)
+        catch (e)
         {
             statsfile={};
         }
@@ -21,26 +24,39 @@ function recordStats(statsFilePath,choice,numberChoices)
         statsfile={};
     }
 
-    if (!statsfile[choice])
+    var choiceChances={};
+    if (statsfile.choiceChances)
     {
-        statsfile[choice]=[];
+        choiceChances=statsfile.choiceChances;
     }
 
-    statsfile[choice].push(numberChoices);
+    if (!choiceChances[choice])
+    {
+        choiceChances[choice]=[];
+    }
 
-    // statsfile.totals=calcTotals(statsfile);
+    choiceChances[choice].push(numberChoices);
 
-    fs.outputFile(statsFilePath,yaml.safeDump(statsfile));
+    statsfile.choiceChances=choiceChances;
+    statsfile.totals=calcTotals(choiceChances);
+
+    fs.outputJson(statsFilePath,statsfile,{spaces:4});
 }
 
-// give entire stats object, calculates totals
+// give choice chances object, calculates totals
 function calcTotals(stats)
 {
-    return _.mapValues(stats,(x)=>{
+    var vidtotals=_.mapValues(stats,(x)=>{
         return _.reduce(x,(r,y)=>{
             return y+r;
         },0);
     });
+
+    vidtotals.total=_.reduce(vidtotals,(r,x)=>{
+        return r+x;
+    },0);
+
+    return vidtotals;
 }
 
 function main()
