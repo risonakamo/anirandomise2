@@ -115,6 +115,13 @@ function checkPaths(config)
 async function selectVid(vidset,itempath,checkonly=false,shorts=[])
 {
     shorts=new Set(shorts);
+
+    if (!_.size(vidset))
+    {
+        console.log("no videos");
+        process.exit();
+    }
+
     var choice=await cspSample(_.keys(vidset));
     var originalShortName=choice;
     var choiceArray=vidset[choice];
@@ -289,6 +296,11 @@ function getShorts()
 // does the same thing as sample, returning random item from an input array
 async function cspSample(dataarray)
 {
+    if (dataarray.length==1)
+    {
+        return dataarray[0];
+    }
+
     return dataarray[await randomNumber(0,dataarray.length-1)];
 }
 
