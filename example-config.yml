@@ -7,4 +7,4 @@ logfilepath: . # the path to the folder where the logfile will be stored
 logfilename: randomise.log # the name of the logfile
 
 stats: false # whether to generate stats file
-statlocation: . # where to place stats results
+statlocation: ./stats.yml # where to place stats results. needs path to filename

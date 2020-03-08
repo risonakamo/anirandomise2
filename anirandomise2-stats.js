@@ -8,6 +8,11 @@ function recordStats(statsFilePath,choice,numberChoices)
     if (fs.existsSync(statsFilePath))
     {
         statsfile=yaml.safeLoad(fs.readFileSync(statsFilePath));
+
+        if (!statsfile)
+        {
+            statsfile={};
+        }
     }
 
     else

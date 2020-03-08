@@ -25,7 +25,7 @@ async function main()
     var vidset=convertVidSet(dirItems);
 
     printVidSet(vidset,shorts);
-    var selection=await selectVid(vidset,config.itemspath,args.check,shorts);
+    var {selection,shortname:selectionShortName}=await selectVid(vidset,config.itemspath,args.check,shorts);
 
     // do logging, video moving and stat recording only if we are NOT in check-only mode
     if (!args.check)
@@ -35,12 +35,12 @@ async function main()
             logToLog(path.normalize(`${config.logfilepath}/${config.logfilename}`),selection);
         }
 
-        moveVid(selection,config.itemspath,config.completepath);
-    }
+        if (config.stats)
+        {
+            recordStats(config.statslocation,selectionShortName,_.size(vidset));
+        }
 
-    if (config.stats)
-    {
-        // recordStats(config.statslocation,selection,vidset.length);
+        moveVid(selection,config.itemspath,config.completepath);
     }
 }
 
@@ -107,10 +107,16 @@ function checkPaths(config)
 // path to the folder containing vids, returns the filename selected.
 // if check only is set, dont actually launch the file
 // give it an array of shorts to also check if the selection is a short
+// returns:
+/* {
+     selection: full filename of selection
+     shortname: choice shortname
+   }*/
 async function selectVid(vidset,itempath,checkonly=false,shorts=[])
 {
     shorts=new Set(shorts);
     var choice=await cspSample(_.keys(vidset));
+    var originalShortName=choice;
     var choiceArray=vidset[choice];
     choiceArray.sort((a,b)=>{
         if (a>b)
@@ -147,7 +153,10 @@ async function selectVid(vidset,itempath,checkonly=false,shorts=[])
         child_process.exec(`cmd /c "${path.normalize(`${itempath}/${choiceArray[0]}`)}"`);
     }
 
-    return choiceArray[0];
+    return {
+        selection:choiceArray[0],
+        shortname:originalShortName
+    };
 }
 
 // given Type VidSet print it out
