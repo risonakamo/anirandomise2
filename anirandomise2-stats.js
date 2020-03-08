@@ -1,6 +1,7 @@
 const yaml=require("js-yaml");
 const fs=require("fs-extra");
 
+// ASYNC
 function recordStats(statsFilePath,choice,numberChoices)
 {
     var statsfile;
@@ -33,3 +34,5 @@ if (!module.parent)
 {
     main();
 }
+
+module.exports=recordStats;

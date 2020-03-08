@@ -9,6 +9,8 @@ const commander=require("commander");
 const keypress=require("keypress");
 const randomNumber=require("random-number-csprng");
 
+const recordStats=require("./anirandomise2-stats");
+
 async function main()
 {
     var args=handleArgs();
@@ -25,14 +27,20 @@ async function main()
     printVidSet(vidset,shorts);
     var selection=await selectVid(vidset,config.itemspath,args.check,shorts);
 
-    if (config.log && !args.check)
-    {
-        logToLog(path.normalize(`${config.logfilepath}/${config.logfilename}`),selection);
-    }
-
+    // do logging, video moving and stat recording only if we are NOT in check-only mode
     if (!args.check)
     {
+        if (config.log)
+        {
+            logToLog(path.normalize(`${config.logfilepath}/${config.logfilename}`),selection);
+        }
+
         moveVid(selection,config.itemspath,config.completepath);
+    }
+
+    if (config.stats)
+    {
+        // recordStats(config.statslocation,selection,vidset.length);
     }
 }
 
