@@ -1,3 +1,4 @@
+const _=require("lodash");
 const yaml=require("js-yaml");
 const fs=require("fs-extra");
 
@@ -27,7 +28,19 @@ function recordStats(statsFilePath,choice,numberChoices)
 
     statsfile[choice].push(numberChoices);
 
-    fs.outputFile(statsFilePath,yaml.safeDump(statsfile,{flowLevel:1}));
+    // statsfile.totals=calcTotals(statsfile);
+
+    fs.outputFile(statsFilePath,yaml.safeDump(statsfile));
+}
+
+// give entire stats object, calculates totals
+function calcTotals(stats)
+{
+    return _.mapValues(stats,(x)=>{
+        return _.reduce(x,(r,y)=>{
+            return y+r;
+        },0);
+    });
 }
 
 function main()
