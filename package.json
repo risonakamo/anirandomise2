@@ -12,6 +12,7 @@
     "random-number-csprng": "^1.0.2"
   },
   "scripts": {
-    "linkall": "npm-link lodash fs-extra"
+    "run":"node anirandomise2",
+    "check":"node anirandomise2 -c"
   }
 }

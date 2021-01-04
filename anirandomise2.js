@@ -77,7 +77,7 @@ function simplifyName(name)
         return "";
     }
 
-    var result=name.replace(/[\[\(].*?[\]\)]|\.mkv|\.mp4/g,"").replace(/[^\w]|\d/g,"").toLowerCase();
+    var result=name.replace(/[\[\(].*?[\]\)]|\.mkv|\.mp4|END|end/g,"").replace(/[^\w]|\d/g,"").toLowerCase();
 
     if (!result.length)
     {
