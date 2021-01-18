@@ -1,18 +1,21 @@
 {
-  "name": "anirandomise2",
-  "version": "2.1.1",
-  "dependencies": {
-    "chalk": "^2.4.2",
-    "commander": "^3.0.2",
-    "fs-extra": "^8.1.0",
-    "js-yaml": "^3.13.1",
-    "keypress": "^0.2.1",
-    "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "random-number-csprng": "^1.0.2"
-  },
+  "name": "anirandomise",
+  "version": "3.0.0",
   "scripts": {
-    "run":"node anirandomise2",
-    "check":"node anirandomise2 -c"
+    "build": "tsc",
+    "run": "node build/anirandomise",
+    "run-dev": "npm run build && npm run run"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "lodash": "^4.17.20",
+    "luxon": "^1.25.0",
+    "normalize-path": "^3.0.0",
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.167",
+    "@types/node": "^14.14.21",
+    "@types/normalize-path": "^3.0.0"
   }
 }
