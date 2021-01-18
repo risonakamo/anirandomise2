@@ -1,4 +1,5 @@
 import {retrieveShows} from "./lib/show-resolvers";
+import {dataServiceTest} from "./lib/data-service";
 
 const _vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
 const _deletePath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\delete";
@@ -8,8 +9,7 @@ const _logfileName:string="randomise.log";
 
 function main()
 {
-    var res=retrieveShows(_vidsPath);
-    console.log(res["rebirthep"]);
+    dataServiceTest();
 }
 
 main();
