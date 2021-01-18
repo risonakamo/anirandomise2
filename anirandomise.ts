@@ -8,7 +8,8 @@ const _logfileName:string="randomise.log";
 
 function main()
 {
-    console.log(retrieveShows(_vidsPath));
+    var res=retrieveShows(_vidsPath);
+    console.log(res["rebirthep"]);
 }
 
 main();

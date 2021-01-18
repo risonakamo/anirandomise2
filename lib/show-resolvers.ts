@@ -3,9 +3,10 @@ import {readdirSync} from "fs";
 import {resolve,extname} from "path";
 import _ from "lodash";
 import ck from "chalk";
+import naturalCompare from "string-natural-compare";
 
 /** create Show objects from shows in a target dir */
-export function retrieveShows(target:string):Show[]
+export function retrieveShows(target:string):ShowsDict
 {
     return groupShowItems(determineShowItems(target));
 }
@@ -30,15 +31,15 @@ function determineShowItems(target:string):ShowItem[]
 }
 
 /** group show items into array of Shows */
-function groupShowItems(items:ShowItem[]):Show[]
+function groupShowItems(items:ShowItem[]):ShowsDict
 {
     var showItemsDict:GroupedShowItems=_.groupBy(items,(x:ShowItem)=>{
         return simplifyName(x.filename);
     });
 
-    return _.map(showItemsDict,(x:ShowItem[],i:string):Show=>{
+    return _.mapValues(showItemsDict,(x:ShowItem[],i:string):Show=>{
         return {
-            items:x,
+            items:x.sort(compareShowItem),
             shortname:i,
             isShort:false
         };
@@ -69,4 +70,10 @@ function simplifyName(filename:string):string
     }
 
     return result;
+}
+
+/** sort function for ShowItem names */
+function compareShowItem(a:ShowItem,b:ShowItem):number
+{
+    return naturalCompare(a.filename,b.filename);
 }

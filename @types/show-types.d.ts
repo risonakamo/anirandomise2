@@ -15,3 +15,6 @@ interface Show
 
 /** show items grouped by short name (key) */
 type GroupedShowItems=Record<string,ShowItem[]>
+
+/** object with shows mapped by their show names (key) */
+type ShowsDict=Record<string,Show>
