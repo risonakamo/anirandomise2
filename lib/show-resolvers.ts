@@ -5,6 +5,8 @@ import _ from "lodash";
 import ck from "chalk";
 import naturalCompare from "string-natural-compare";
 
+import {getShorts} from "./data-service";
+
 /** create Show objects from shows in a target dir */
 export function retrieveShows(target:string):ShowsDict
 {
@@ -33,6 +35,7 @@ function determineShowItems(target:string):ShowItem[]
 /** group show items into array of Shows */
 function groupShowItems(items:ShowItem[]):ShowsDict
 {
+    var shorts:Set<string>=getShorts();
     var showItemsDict:GroupedShowItems=_.groupBy(items,(x:ShowItem)=>{
         return simplifyName(x.filename);
     });
@@ -41,7 +44,7 @@ function groupShowItems(items:ShowItem[]):ShowsDict
         return {
             items:x.sort(compareShowItem),
             shortname:i,
-            isShort:false
+            isShort:shorts.has(i)
         };
     });
 }
