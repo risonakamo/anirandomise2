@@ -4,8 +4,14 @@ import {resolve,extname} from "path";
 import _ from "lodash";
 import ck from "chalk";
 
+/** create Show objects from shows in a target dir */
+export function retrieveShows(target:string):Show[]
+{
+    return groupShowItems(determineShowItems(target));
+}
+
 /** generate show items for all shows at the target path. */
-export function determineShowItems(target:string):ShowItem[]
+function determineShowItems(target:string):ShowItem[]
 {
     // all files in the dir
     var files:string[]=readdirSync(nm(target));
@@ -23,15 +29,20 @@ export function determineShowItems(target:string):ShowItem[]
     });
 }
 
-// TODO: INCOMPLETE
 /** group show items into array of Shows */
-export function groupShowItems(items:ShowItem[])
+function groupShowItems(items:ShowItem[]):Show[]
 {
     var showItemsDict:GroupedShowItems=_.groupBy(items,(x:ShowItem)=>{
         return simplifyName(x.filename);
     });
 
-    console.log(showItemsDict);
+    return _.map(showItemsDict,(x:ShowItem[],i:string):Show=>{
+        return {
+            items:x,
+            shortname:i,
+            isShort:false
+        };
+    });
 }
 
 /** given a filename, determine if the file is a file type we care about
