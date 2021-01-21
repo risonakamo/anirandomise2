@@ -1,5 +1,5 @@
 import {retrieveShows} from "./lib/show-resolvers";
-import {addShort} from "./lib/data-service";
+import {addShort,dataServiceTest} from "./lib/data-service";
 import {cspSample,testRandom} from "./lib/randomisation";
 
 const _vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
@@ -10,8 +10,9 @@ const _logfileName:string="randomise.log";
 
 async function main()
 {
-    var shows:ShowsDict=retrieveShows(_vidsPath);
-    testRandom(Object.values(shows),10000);
+    // var shows:ShowsDict=retrieveShows(_vidsPath);
+    // testRandom(Object.values(shows),10000);
+    dataServiceTest();
 }
 
 main();
