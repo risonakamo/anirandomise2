@@ -5,9 +5,10 @@
     "build": "tsc",
     "run": "node build/anirandomise",
     "run-dev": "npm run build && npm run run",
-    "test":"npm run build && mocha build/tests/tests.spec.js"
+    "test": "npm run build && mocha build/tests"
   },
   "dependencies": {
+    "chai": "^4.2.0",
     "chalk": "^4.1.0",
     "jsonfile": "^6.1.0",
     "lodash": "^4.17.20",
@@ -19,6 +20,7 @@
     "typescript": "^4.1.3"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.14",
     "@types/jsonfile": "^6.0.0",
     "@types/lodash": "^4.14.167",
     "@types/mocha": "^8.2.0",

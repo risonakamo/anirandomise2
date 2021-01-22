@@ -66,7 +66,4 @@ export async function testRandom(shows:Show[],numPicks:number):Promise<void>
     console.log("expected average:",(1/shows.length)*100);
 }
 
-export async function testRandom2():Promise<void>
-{
-    console.log(await duplicateChance(4));
-}
+export const duplicateChanceTest=duplicateChance;
