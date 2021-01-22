@@ -4,13 +4,15 @@
   "scripts": {
     "build": "tsc",
     "run": "node build/anirandomise",
-    "run-dev": "npm run build && npm run run"
+    "run-dev": "npm run build && npm run run",
+    "test":"npm run build && mocha build/tests/tests.spec.js"
   },
   "dependencies": {
     "chalk": "^4.1.0",
     "jsonfile": "^6.1.0",
     "lodash": "^4.17.20",
     "luxon": "^1.25.0",
+    "mocha": "^8.2.1",
     "normalize-path": "^3.0.0",
     "random-number-csprng": "^1.0.2",
     "string-natural-compare": "^3.0.1",
@@ -19,6 +21,7 @@
   "devDependencies": {
     "@types/jsonfile": "^6.0.0",
     "@types/lodash": "^4.14.167",
+    "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.21",
     "@types/normalize-path": "^3.0.0",
     "@types/random-number-csprng": "^1.0.0",

@@ -1,8 +1,26 @@
 import randomNumber from "random-number-csprng";
 import _ from "lodash";
 
+import {getPreviousSelection} from "./data-service";
+
+// export async function pickShow(shows:ShowsDict):Promise<Show>
+// {
+//     var showNames:Set<string>=new Set(Object.keys(shows));
+//     var lastShow:string|null=getPreviousSelection();
+
+//     // if there was actually a previous show, the previous show is one of the shows
+//     // that we can pick from, and the duplicate chance returns true, then we are returning
+//     // the duplicate show.
+//     if (lastShow && showNames.has(lastShow) && await duplicateChance(showNames.size))
+//     {
+//         return shows[lastShow];
+//     }
+
+
+// }
+
 /** return a random value from a given array using csrng */
-export async function cspSample<T>(array:T[]):Promise<T>
+async function cspSample<T>(array:T[]):Promise<T>
 {
     if (array.length==1)
     {
