@@ -1,10 +1,10 @@
-import {describe,it} from "mocha";
 import {assert} from "chai";
 import _ from "lodash";
 
 import {retrieveShows} from "../lib/show-resolvers";
-import {randomisationTestable,pickShow} from "../lib/randomisation";
 import {getPreviousSelection} from "../lib/data-service";
+
+import {randomisationTestable,pickShow} from "../lib/randomisation";
 
 const _vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
 
@@ -28,7 +28,7 @@ describe("csp sample test",()=>{
     });
 });
 
-describe.only("pick show. REQUIRES SHOWS TO BE IN THE TESTZONE/vids",()=>{
+describe("pick show. REQUIRES SHOWS TO BE IN THE TESTZONE/vids",()=>{
     it("should return a show",async ()=>{
         var shows:ShowsDict=retrieveShows(_vidsPath);
 
