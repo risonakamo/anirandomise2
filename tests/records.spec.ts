@@ -5,7 +5,7 @@ import {pickShow} from "../lib/randomisation";
 
 import {recordShow} from "../lib/records";
 
-describe.only("record show tests",()=>{
+describe("record show tests",()=>{
     const vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
     const logFile:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\randomise.log";
     const badLogFile:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone";
@@ -19,7 +19,7 @@ describe.only("record show tests",()=>{
         recordShow(picked,logFile);
     });
 
-    it.only(`should fail because the log file is a folder
+    it(`should fail because the log file is a folder
     and should NOT set the previous selected field`,async ()=>{
         var shows:ShowsDict=retrieveShows(vidsPath);
         var picked:Show=await pickShow(shows);
@@ -39,7 +39,7 @@ describe.only("record show tests",()=>{
         });
     });
 
-    it.only(`same as should fail test, but should NOT fail because this time
+    it(`same as should fail test, but should NOT fail because this time
     a correct log file is given`,async ()=>{
         var shows:ShowsDict=retrieveShows(vidsPath);
         var picked:Show=await pickShow(shows);
