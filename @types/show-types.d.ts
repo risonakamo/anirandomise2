@@ -9,6 +9,7 @@ interface ShowItem
 interface Show
 {
     items:ShowItem[]
+    topShow:ShowItem
     shortname:string
     isShort:boolean
 }

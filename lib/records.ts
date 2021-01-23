@@ -9,5 +9,5 @@ export function recordShow(show:Show,logFile:string)
         throw `log file ${logFile} was not a file`;
     }
 
-    prependFile(logFile,`${show.items[0].filename}\n`);
+    prependFile(logFile,`${show.topShow}\n`);
 }

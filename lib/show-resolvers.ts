@@ -41,8 +41,11 @@ function groupShowItems(items:ShowItem[]):ShowsDict
     });
 
     return _.mapValues(showItemsDict,(x:ShowItem[],i:string):Show=>{
+        var sortedItems:ShowItem[]=x.sort(compareShowItem);
+
         return {
-            items:x.sort(compareShowItem),
+            items:sortedItems,
+            topShow:sortedItems[0],
             shortname:i,
             isShort:shorts.has(i)
         };
