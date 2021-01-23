@@ -5,7 +5,7 @@ import {executeShow} from "../lib/execution";
 
 const _vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
 
-describe.only("show execution",()=>{
+describe("show execution",()=>{
     it("should launch a show",async function(){
         this.timeout(0);
 
