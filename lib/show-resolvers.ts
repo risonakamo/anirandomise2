@@ -1,6 +1,6 @@
 import nm from "normalize-path";
 import {readdirSync} from "fs";
-import {resolve,extname} from "path";
+import {resolve,extname,join} from "path";
 import _ from "lodash";
 import ck from "chalk";
 import naturalCompare from "string-natural-compare";
@@ -27,7 +27,7 @@ function determineShowItems(target:string):ShowItem[]
     return _.map(files,(x:string):ShowItem=>{
         return {
             filename:x,
-            fullPath:nm(resolve(x))
+            fullPath:nm(resolve(join(target,x)))
         };
     });
 }
