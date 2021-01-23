@@ -3,21 +3,24 @@ import _ from "lodash";
 
 import {getPreviousSelection} from "./data-service";
 
-// export async function pickShow(shows:ShowsDict):Promise<Show>
-// {
-//     var showNames:Set<string>=new Set(Object.keys(shows));
-//     var lastShow:string|null=getPreviousSelection();
+/** pick a show from a shows dict. has a reduced chance to pick the show set as the previous
+ * selection, but does not set the previous selection. */
+export async function pickShow(shows:ShowsDict):Promise<Show>
+{
+    var showNames:Set<string>=new Set(Object.keys(shows));
+    var lastShow:string|null=getPreviousSelection();
 
-//     // if there was actually a previous show, the previous show is one of the shows
-//     // that we can pick from, and the duplicate chance returns true, then we are returning
-//     // the duplicate show.
-//     if (lastShow && showNames.has(lastShow) && await duplicateChance(showNames.size))
-//     {
-//         return shows[lastShow];
-//     }
+    // if there was actually a previous show, the previous show is one of the shows
+    // that we can pick from, and the duplicate chance returns true, then we are returning
+    // the duplicate show.
+    if (lastShow && showNames.has(lastShow) && await duplicateChance(showNames.size))
+    {
+        return shows[lastShow];
+    }
 
-
-// }
+    var showsWithoutLastShow:ShowsDict=_.omit(shows,lastShow!);
+    return cspSample(Object.values(showsWithoutLastShow));
+}
 
 /** return a random value from a given array using csrng */
 async function cspSample<T>(array:T[]):Promise<T>
@@ -44,26 +47,7 @@ async function duplicateChance(items:number,reductionChance:number=.5,maxChance:
     return randomVal<successChance;
 }
 
-/** test cspSample function. give it array of shows to pick from and number of times to perform picks. */
-export async function testRandom(shows:Show[],numPicks:number):Promise<void>
-{
-    var picks:Promise<Show>[]=[];
-    for (var x=0;x<numPicks;x++)
-    {
-        picks.push(cspSample(shows));
-    }
-
-    var resolvedPicks:Show[]=await Promise.all(picks);
-    var pickCounts:ShowNameCounts=_.countBy(resolvedPicks,(x:Show)=>{
-        return x.shortname;
-    });
-
-    var percentages:ShowNameCounts=_.mapValues(pickCounts,(x:number)=>{
-        return (x/numPicks)*100;
-    });
-
-    console.log(percentages);
-    console.log("expected average:",(1/shows.length)*100);
-}
-
-export const duplicateChanceTest=duplicateChance;
+export const randomisationTestable={
+    duplicateChance,
+    cspSample
+};
