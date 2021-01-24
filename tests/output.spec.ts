@@ -2,7 +2,7 @@ import {retrieveShows} from "../lib/show-resolvers";
 import {pickShow} from "../lib/randomisation";
 
 import {outputTests} from "../lib/output";
-const {printChoice}=outputTests;
+const {printChoice,printShowListStats}=outputTests;
 
 describe.only("output tests",async ()=>{
     const vidsPath="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
@@ -21,6 +21,13 @@ describe.only("output tests",async ()=>{
 
     it("should print out a choice 4",async ()=>{
         await printChoiceTest(vidsPath);
+    });
+
+    it("should print out show list counts",async ()=>{
+        var shows:ShowsDict=retrieveShows(vidsPath);
+        var picked:Show=await pickShow(shows);
+        console.log("picked",picked.shortname);
+        printShowListStats(shows,picked);
     });
 });
 
