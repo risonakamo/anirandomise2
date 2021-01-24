@@ -1,5 +1,6 @@
 import ck from "chalk";
 import _ from "lodash";
+import stripAnsi from "strip-ansi";
 
 import {resolveShowItems} from "../lib/show-resolvers";
 
@@ -85,19 +86,32 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
     if (uniqueCounts.shows>uniqueCountsAfter.shows
         || uniqueCounts.shorts>uniqueCountsAfter.shorts)
     {
-        changeStrings.indUnique=` -> ${uniqueCountsAfter.shows} (${uniqueCountsAfter.shorts})`;
+        var showString:string=ck.yellow(uniqueCountsAfter.shows);
+        var shortString:string=ck.magenta(uniqueCountsAfter.shorts);
+
+        if (uniqueCounts.shows>uniqueCountsAfter.shows)
+        {
+            showString=ck.red(stripAnsi(showString));
+        }
+
+        else
+        {
+            shortString=ck.red(stripAnsi(shortString));
+        }
+
+        changeStrings.indUnique=` -> ${showString}/${shortString}`;
     }
 
     if (itemCounts.shows>itemCountsAfter.shows
         || itemCounts.shorts>itemCountsAfter.shorts)
     {
-        changeStrings.indItems=` -> ${itemCountsAfter.shows} (${itemCountsAfter.shorts})`;
+        changeStrings.indItems=` -> ${itemCountsAfter.shows}/${itemCountsAfter.shorts}`;
     }
 
-    console.log(`${ck.blue("Show Counts:")} ${ck.yellow(uniqueCounts.total)}${changeStrings.totalUnique}`);
-    console.log(`${ck.blue("Show/Shorts:")} ${ck.yellow(uniqueCounts.shows)} (${ck.magenta(uniqueCounts.shorts)})${changeStrings.indUnique}`);
-    console.log(`${ck.cyan("Item Counts:")} ${ck.yellow(itemCounts.total)}${changeStrings.totalItems}`);
-    console.log(`${ck.cyan("Show/Shorts:")} ${ck.yellow(itemCounts.shows)} (${ck.magenta(itemCounts.shorts)})${changeStrings.indItems}`);
+    console.log(`${ck.blue("Shows:")} ${ck.yellow(uniqueCounts.total)}${changeStrings.totalUnique}`);
+    console.log(`${ck.blue("  S/S:")} ${ck.yellow(uniqueCounts.shows)}/${ck.magenta(uniqueCounts.shorts)}${changeStrings.indUnique}`);
+    console.log(`${ck.cyan("Items:")} ${ck.yellow(itemCounts.total)}${changeStrings.totalItems}`);
+    console.log(`${ck.cyan("  S/S:")} ${ck.yellow(itemCounts.shows)}/${ck.magenta(itemCounts.shorts)}${changeStrings.indItems}`);
 }
 
 /** determine unique ShowCounts for shows. unique counts is the number of
