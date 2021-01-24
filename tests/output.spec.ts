@@ -52,7 +52,9 @@ describe.only("print show stats",()=>{
 
     it("should print out item counts object",()=>{
         var shows:ShowsDict=retrieveShows(vidsPath);
-        calcItemCounts(shows);
+        var res:ShowCounts=calcItemCounts(shows);
+        console.log("item counts",res);
+        assert.isObject(res);
     });
 });
 

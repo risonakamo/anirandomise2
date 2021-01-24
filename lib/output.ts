@@ -56,12 +56,23 @@ function calcUniqueCounts(shows:ShowsDict):ShowCounts
 }
 
 /** determine ShowCounts for show items. show items includes all seperate files */
-// function calcItemCounts(shows:ShowsDict):ShowCounts
-function calcItemCounts(shows:ShowsDict)
+function calcItemCounts(shows:ShowsDict):ShowCounts
 {
     var showItems:ShowItem[]=resolveShowItems(shows);
 
-    console.log(showItems);
+    var itemCounts:ShowCounts={
+        total:showItems.length,
+        shows:0,
+        shorts:0
+    };
+
+    itemCounts.shorts=_.sumBy(showItems,(x:ShowItem)=>{
+        return x.isShort?1:0;
+    });
+
+    itemCounts.shows=itemCounts.total-itemCounts.shorts;
+
+    return itemCounts;
 }
 
 export const outputTests={
