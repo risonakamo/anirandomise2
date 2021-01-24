@@ -38,10 +38,13 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
     var uniqueCountsAfter:ShowCounts={...uniqueCounts};
     var itemCountsAfter:ShowCounts={...itemCounts};
 
+    // if the show picked is the last show, affects the unique counts
     if (isLastShow)
     {
+        // total number of uniques always decreases
         uniqueCountsAfter.total--;
 
+        // decrease the number of uniques corresponding to the type of the picked show
         if (isShort)
         {
             uniqueCountsAfter.shorts--;
@@ -53,8 +56,10 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
         }
     }
 
+    // the item counts always decreases
     itemCountsAfter.total--;
 
+    // decrease the corresponding item count
     if (isShort)
     {
         itemCountsAfter.shorts--;
