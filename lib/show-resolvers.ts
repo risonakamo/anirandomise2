@@ -13,6 +13,14 @@ export function retrieveShows(target:string):ShowsDict
     return groupShowItems(determineShowItems(target));
 }
 
+/** convert ShowsDict back to list of ShowItems */
+export function resolveShowItems(shows:ShowsDict):ShowItem[]
+{
+    return _.flatMap(shows,(x:Show)=>{
+        return x.items;
+    });
+}
+
 /** generate show items for all shows at the target path. */
 function determineShowItems(target:string):ShowItem[]
 {

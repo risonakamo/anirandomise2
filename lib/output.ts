@@ -1,6 +1,8 @@
 import ck from "chalk";
 import _ from "lodash";
 
+import {resolveShowItems} from "../lib/show-resolvers";
+
 /** print out a selected show. */
 function printChoice(show:Show):void
 {
@@ -25,54 +27,46 @@ function printChoice(show:Show):void
     }
 }
 
-// TODO: RE DO THIS COMPLETELY
 function printShowListStats(shows:ShowsDict,choice:Show):void
+{
+    var uniqueCounts:ShowCounts=calcUniqueCounts(shows);
+
+    // console.log(uniqueCounts);
+}
+
+/** determine unique ShowCounts for shows. unique counts is the number of
+ * unique shortnames appearing */
+function calcUniqueCounts(shows:ShowsDict):ShowCounts
 {
     var showList:Show[]=Object.values(shows);
 
-    var numShorts:number=_.sumBy(showList,(x:Show)=>{
+    var uniqueCounts:ShowCounts={
+        total:showList.length,
+        shows:0,
+        shorts:0
+    };
+
+    uniqueCounts.shorts=_.sumBy(showList,(x:Show)=>{
         return x.isShort?1:0;
     });
 
-    var numShows:number=showList.length-numShorts;
+    uniqueCounts.shows=uniqueCounts.total-uniqueCounts.shorts;
 
-    var showListLengthAfter:number=numShows;
-    var numShortsAfter:number=numShorts;
+    return uniqueCounts;
+}
 
-    if (choice.isShort)
-    {
-        numShortsAfter--;
-    }
+/** determine ShowCounts for show items. show items includes all seperate files */
+// function calcItemCounts(shows:ShowsDict):ShowCounts
+function calcItemCounts(shows:ShowsDict)
+{
+    var showItems:ShowItem[]=resolveShowItems(shows);
 
-    else
-    {
-        showListLengthAfter--;
-    }
-
-    var showLengthAfterString:string;
-    var numShortsAfterString:string;
-
-    if (choice.isShort)
-    {
-        showLengthAfterString=ck.yellow(showListLengthAfter);
-        numShortsAfterString=ck.red(numShortsAfter);
-    }
-
-    else
-    {
-        showLengthAfterString=ck.red(showListLengthAfter);
-        numShortsAfterString=ck.magentaBright(numShortsAfter);
-    }
-
-    console.log([
-        `Counts: `,
-        `${ck.yellow(showList.length)} (${ck.magentaBright(numShorts)})`,
-        ck.grey(` -> `),
-        `${showLengthAfterString} (${numShortsAfterString})`
-    ].join(""));
+    console.log(showItems);
 }
 
 export const outputTests={
     printChoice,
-    printShowListStats
+    printShowListStats,
+    calcUniqueCounts,
+    calcItemCounts
 };
