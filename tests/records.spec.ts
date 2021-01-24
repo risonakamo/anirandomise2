@@ -8,7 +8,7 @@ import {recordShow} from "../lib/records";
 
 chaiUse(chaiPromise);
 
-describe.only("record show tests",()=>{
+describe("record show tests",()=>{
     const vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
     const logFile:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\randomise.log";
     const badLogFile:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone";
