@@ -6,7 +6,7 @@ import ck from "chalk";
 import {setPreviousSelection} from "../lib/data-service";
 
 /** record a show to the target log file */
-export function recordShow(show:Show,logFile:string):Promise<void>
+export async function recordShow(show:Show,logFile:string):Promise<void>
 {
     try
     {
@@ -15,7 +15,8 @@ export function recordShow(show:Show,logFile:string):Promise<void>
         // if it exists and is a directory, problem
         if (logfileStat && !logfileStat.isFile())
         {
-            throw `log file ${logFile} was not a file`;
+            console.log(ck.red(`log file ${logFile} was not a file`));
+            throw "LOGERR";
         }
     }
 

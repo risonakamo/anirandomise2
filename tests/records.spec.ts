@@ -1,9 +1,12 @@
-import {assert} from "chai";
+import {assert,use as chaiUse} from "chai";
+import chaiPromise from "chai-as-promised";
 
 import {retrieveShows} from "../lib/show-resolvers";
 import {pickShow} from "../lib/randomisation";
 
 import {recordShow} from "../lib/records";
+
+chaiUse(chaiPromise);
 
 describe.only("record show tests",()=>{
     const vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
@@ -20,24 +23,13 @@ describe.only("record show tests",()=>{
         recordShow(picked,logFile);
     });
 
-    it(`should fail because the log file is a folder
-    and should NOT set the previous selected field`,async ()=>{
+    it(`should fail because the log file path given is a folder. also should NOT set the previous selected field`,async ()=>{
         var shows:ShowsDict=retrieveShows(vidsPath);
         var picked:Show=await pickShow(shows);
 
         console.log("picked",picked);
 
-        assert.throws(()=>{
-            try
-            {
-                recordShow(picked,badLogFile);
-            }
-
-            catch (err)
-            {
-                throw err;
-            }
-        });
+        await assert.isRejected(recordShow(picked,badLogFile));
     });
 
     it(`same as should fail test, but should NOT fail because this time
@@ -47,16 +39,6 @@ describe.only("record show tests",()=>{
 
         console.log("picked",picked);
 
-        assert.doesNotThrow(()=>{
-            try
-            {
-                recordShow(picked,logFile);
-            }
-
-            catch (err)
-            {
-                throw err;
-            }
-        });
+        await assert.isFulfilled(recordShow(picked,logFile));
     });
 });
