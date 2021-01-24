@@ -36,7 +36,7 @@ describe("print choice tests",async ()=>{
 describe.only("print show stats",()=>{
     const vidsPath="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
 
-    it("should print out show list counts",async ()=>{
+    it.only("should print out show list counts",async ()=>{
         var shows:ShowsDict=retrieveShows(vidsPath);
         var picked:Show=await pickShow(shows);
         console.log("picked",picked.shortname);

@@ -30,8 +30,45 @@ function printChoice(show:Show):void
 function printShowListStats(shows:ShowsDict,choice:Show):void
 {
     var uniqueCounts:ShowCounts=calcUniqueCounts(shows);
+    var itemCounts:ShowCounts=calcItemCounts(shows);
 
-    // console.log(uniqueCounts);
+    var isLastShow:boolean=choice.items.length==1;
+    var isShort:boolean=choice.isShort;
+
+    var uniqueCountsAfter:ShowCounts={...uniqueCounts};
+    var itemCountsAfter:ShowCounts={...itemCounts};
+
+    if (isLastShow)
+    {
+        uniqueCountsAfter.total--;
+
+        if (isShort)
+        {
+            uniqueCountsAfter.shorts--;
+        }
+
+        else
+        {
+            uniqueCountsAfter.shows--;
+        }
+    }
+
+    itemCountsAfter.total--;
+
+    if (isShort)
+    {
+        itemCountsAfter.shorts--;
+    }
+
+    else
+    {
+        itemCountsAfter.shows--;
+    }
+
+    console.log("unique",uniqueCounts);
+    console.log("items",itemCounts);
+    console.log("unique after",uniqueCountsAfter);
+    console.log("items after",itemCountsAfter);
 }
 
 /** determine unique ShowCounts for shows. unique counts is the number of
