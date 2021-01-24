@@ -1,8 +1,14 @@
 /** represents a single show file. */
-interface ShowItem
+interface ShowItemSimple
 {
     filename:string
     fullPath:string
+}
+
+/** represents a single show file with short field */
+interface ShowItem extends ShowItemSimple
+{
+    isShort:boolean
 }
 
 /** represent a show, which includes one or more show files. */
@@ -13,6 +19,9 @@ interface Show
     shortname:string
     isShort:boolean
 }
+
+/** show items (simple) grouped by short name (key) */
+type GroupedShowItemsSimple=Record<string,ShowItemSimple[]>
 
 /** show items grouped by short name (key) */
 type GroupedShowItems=Record<string,ShowItem[]>

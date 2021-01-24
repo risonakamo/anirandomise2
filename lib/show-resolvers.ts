@@ -22,7 +22,7 @@ export function resolveShowItems(shows:ShowsDict):ShowItem[]
 }
 
 /** generate show items for all shows at the target path. */
-function determineShowItems(target:string):ShowItem[]
+function determineShowItems(target:string):ShowItemSimple[]
 {
     // all files in the dir
     var files:string[]=readdirSync(nm(target));
@@ -32,7 +32,7 @@ function determineShowItems(target:string):ShowItem[]
         return isValidShow(x);
     });
 
-    return _.map(files,(x:string):ShowItem=>{
+    return _.map(files,(x:string):ShowItemSimple=>{
         return {
             filename:x,
             fullPath:nm(resolve(join(target,x)))
@@ -41,21 +41,23 @@ function determineShowItems(target:string):ShowItem[]
 }
 
 /** group show items into array of Shows */
-function groupShowItems(items:ShowItem[]):ShowsDict
+function groupShowItems(items:ShowItemSimple[]):ShowsDict
 {
     var shorts:Set<string>=getShorts();
-    var showItemsDict:GroupedShowItems=_.groupBy(items,(x:ShowItem)=>{
+    var showItemsDict:GroupedShowItemsSimple=_.groupBy(items,(x:ShowItemSimple)=>{
         return simplifyName(x.filename);
     });
 
-    return _.mapValues(showItemsDict,(x:ShowItem[],i:string):Show=>{
-        var sortedItems:ShowItem[]=x.sort(compareShowItem);
+    return _.mapValues(showItemsDict,(x:ShowItemSimple[],i:string):Show=>{
+        var isShort:boolean=shorts.has(i);
+        var sortedItems:ShowItemSimple[]=x.sort(compareShowItem);
+        var upgradedItems:ShowItem[]=upgradeShowItems(sortedItems,isShort);
 
         return {
-            items:sortedItems,
-            topShow:sortedItems[0],
+            items:upgradedItems,
+            topShow:upgradedItems[0],
             shortname:i,
-            isShort:shorts.has(i)
+            isShort
         };
     });
 }
@@ -87,7 +89,19 @@ function simplifyName(filename:string):string
 }
 
 /** sort function for ShowItem names */
-function compareShowItem(a:ShowItem,b:ShowItem):number
+function compareShowItem(a:ShowItemSimple,b:ShowItemSimple):number
 {
     return naturalCompare(a.filename,b.filename);
+}
+
+/** given an array of related ShowItemSimples, upgrade them to ShowItems with the short
+ * field set to the given short value */
+function upgradeShowItems(showItems:ShowItemSimple[],isShort:boolean):ShowItem[]
+{
+    return _.map(showItems,(x:ShowItemSimple):ShowItem=>{
+        return {
+            ...x,
+            isShort
+        };
+    });
 }
