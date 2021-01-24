@@ -70,10 +70,34 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
         itemCountsAfter.shows--;
     }
 
-    console.log("unique",uniqueCounts);
-    console.log("items",itemCounts);
-    console.log("unique after",uniqueCountsAfter);
-    console.log("items after",itemCountsAfter);
+    var changeStrings:CountChangeStrings={
+        totalUnique:"",
+        indUnique:"",
+        totalItems:` -> ${ck.red(itemCountsAfter.total)}`,
+        indItems:""
+    };
+
+    if (uniqueCounts.total!=uniqueCountsAfter.total)
+    {
+        changeStrings.totalUnique=` -> ${ck.red(uniqueCountsAfter.total)}`;
+    }
+
+    if (uniqueCounts.shows>uniqueCountsAfter.shows
+        || uniqueCounts.shorts>uniqueCountsAfter.shorts)
+    {
+        changeStrings.indUnique=` -> ${uniqueCountsAfter.shows} (${uniqueCountsAfter.shorts})`;
+    }
+
+    if (itemCounts.shows>itemCountsAfter.shows
+        || itemCounts.shorts>itemCountsAfter.shorts)
+    {
+        changeStrings.indItems=` -> ${itemCountsAfter.shows} (${itemCountsAfter.shorts})`;
+    }
+
+    console.log(`${ck.blue("Show Counts:")} ${ck.yellow(uniqueCounts.total)}${changeStrings.totalUnique}`);
+    console.log(`${ck.blue("Show/Shorts:")} ${ck.yellow(uniqueCounts.shows)} (${ck.magenta(uniqueCounts.shorts)})${changeStrings.indUnique}`);
+    console.log(`${ck.cyan("Item Counts:")} ${ck.yellow(itemCounts.total)}${changeStrings.totalItems}`);
+    console.log(`${ck.cyan("Show/Shorts:")} ${ck.yellow(itemCounts.shows)} (${ck.magenta(itemCounts.shorts)})${changeStrings.indItems}`);
 }
 
 /** determine unique ShowCounts for shows. unique counts is the number of
