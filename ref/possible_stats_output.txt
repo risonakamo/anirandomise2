@@ -2,3 +2,7 @@ total uniq: 10
  ind. uniq: 8 (2) -> 7 (2)
 total itms: 15 -> 14
  ind. itms: 10 (5) -> 9 (5)
+
+
+ Shows  8    ->  9
+   S/S  10,1 ->  9,1

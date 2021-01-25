@@ -70,48 +70,6 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
     {
         itemCountsAfter.shows--;
     }
-
-    var changeStrings:CountChangeStrings={
-        totalUnique:"",
-        indUnique:"",
-        totalItems:` -> ${ck.red(itemCountsAfter.total)}`,
-        indItems:""
-    };
-
-    if (uniqueCounts.total!=uniqueCountsAfter.total)
-    {
-        changeStrings.totalUnique=` -> ${ck.red(uniqueCountsAfter.total)}`;
-    }
-
-    if (uniqueCounts.shows>uniqueCountsAfter.shows
-        || uniqueCounts.shorts>uniqueCountsAfter.shorts)
-    {
-        var showString:string=ck.yellow(uniqueCountsAfter.shows);
-        var shortString:string=ck.magenta(uniqueCountsAfter.shorts);
-
-        if (uniqueCounts.shows>uniqueCountsAfter.shows)
-        {
-            showString=ck.red(stripAnsi(showString));
-        }
-
-        else
-        {
-            shortString=ck.red(stripAnsi(shortString));
-        }
-
-        changeStrings.indUnique=` -> ${showString}/${shortString}`;
-    }
-
-    if (itemCounts.shows>itemCountsAfter.shows
-        || itemCounts.shorts>itemCountsAfter.shorts)
-    {
-        changeStrings.indItems=` -> ${itemCountsAfter.shows}/${itemCountsAfter.shorts}`;
-    }
-
-    console.log(`${ck.blue("Shows:")} ${ck.yellow(uniqueCounts.total)}${changeStrings.totalUnique}`);
-    console.log(`${ck.blue("  S/S:")} ${ck.yellow(uniqueCounts.shows)}/${ck.magenta(uniqueCounts.shorts)}${changeStrings.indUnique}`);
-    console.log(`${ck.cyan("Items:")} ${ck.yellow(itemCounts.total)}${changeStrings.totalItems}`);
-    console.log(`${ck.cyan("  S/S:")} ${ck.yellow(itemCounts.shows)}/${ck.magenta(itemCounts.shorts)}${changeStrings.indItems}`);
 }
 
 /** determine unique ShowCounts for shows. unique counts is the number of
