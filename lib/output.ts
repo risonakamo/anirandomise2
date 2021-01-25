@@ -1,6 +1,7 @@
 import ck from "chalk";
 import _ from "lodash";
 import stripAnsi from "strip-ansi";
+import textTable from "text-table";
 
 import {resolveShowItems} from "../lib/show-resolvers";
 
@@ -70,6 +71,14 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
     {
         itemCountsAfter.shows--;
     }
+
+    console.log(textTable([
+        ["",ck.green("total"),ck.greenBright("shows"),ck.magenta("shorts")],
+        [ck.blue("names"),"8→7","6→5","2"],
+        [ck.cyan("items"),"11→10","7→6","4"]
+    ],{
+        stringLength:ansiLength
+    }));
 }
 
 /** determine unique ShowCounts for shows. unique counts is the number of
@@ -111,6 +120,12 @@ function calcItemCounts(shows:ShowsDict):ShowCounts
     itemCounts.shows=itemCounts.total-itemCounts.shorts;
 
     return itemCounts;
+}
+
+/** return length of string with colours */
+function ansiLength(input:string):number
+{
+    return stripAnsi(input).length;
 }
 
 export const outputTests={
