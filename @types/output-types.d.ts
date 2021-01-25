@@ -6,11 +6,10 @@ interface ShowCounts
     shorts:number
 }
 
-/** data container for count change strings */
-interface CountChangeStrings
+/** diff between ShowCounts with string fields */
+interface ShowCountsDiff
 {
-    totalUnique:string
-    indUnique:string
-    totalItems:string
-    indItems:string
+    total:string
+    shows:string
+    shorts:string
 }

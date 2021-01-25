@@ -72,10 +72,13 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
         itemCountsAfter.shows--;
     }
 
+    var namesDiff:ShowCountsDiff=diffShowCounts(uniqueCounts,uniqueCountsAfter);
+    var itemsDiff:ShowCountsDiff=diffShowCounts(itemCounts,itemCountsAfter);
+
     console.log(textTable([
         ["",ck.green("total"),ck.greenBright("shows"),ck.magenta("shorts")],
-        [ck.blue("names"),"8→7","6→5","2"],
-        [ck.cyan("items"),"11→10","7→6","4"]
+        [ck.blue("names"),namesDiff.total,namesDiff.shows,namesDiff.shorts],
+        [ck.cyan("items"),itemsDiff.total,itemsDiff.shows,itemsDiff.shorts]
     ],{
         stringLength:ansiLength
     }));
@@ -126,6 +129,21 @@ function calcItemCounts(shows:ShowsDict):ShowCounts
 function ansiLength(input:string):number
 {
     return stripAnsi(input).length;
+}
+
+/** diff show counts into strings */
+function diffShowCounts(initial:ShowCounts,after:ShowCounts):ShowCountsDiff
+{
+    return _.mapValues(initial,(x:number,i:string):string=>{
+        var afterValue:number=after[i as keyof ShowCounts];
+
+        if (x==afterValue)
+        {
+            return x.toString();
+        }
+
+        return `${x}${ck.grey("→")}${ck.red(afterValue)}`;
+    });
 }
 
 export const outputTests={
