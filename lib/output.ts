@@ -8,13 +8,20 @@ import {resolveShowItems} from "../lib/show-resolvers";
 /** print out a selected show. */
 function printChoice(show:Show):void
 {
-    var shortMark:string="";
+    var shortMark:string=show.isShort?"*":"";
+    var selectedLine:string=`> ${ck.underline(show.shortname)}${shortMark}`;
+
     if (show.isShort)
     {
-        shortMark=ck.magenta("*");
+        selectedLine=ck.magenta(selectedLine);
     }
 
-    console.log(`> ${ck.underline.yellow(show.shortname)}${shortMark}`);
+    else
+    {
+        selectedLine=ck.yellow(selectedLine);
+    }
+
+    console.log(selectedLine);
 
     for (var x=0;x<show.items.length;x++)
     {
@@ -29,6 +36,8 @@ function printChoice(show:Show):void
     }
 }
 
+/** given the shows and the picked show, output stats about the number of shows and items,
+ * as well as the change in counts if the picked show were to be removed */
 function printShowListStats(shows:ShowsDict,choice:Show):void
 {
     var uniqueCounts:ShowCounts=calcUniqueCounts(shows);
