@@ -3,7 +3,7 @@ import {assert} from "chai";
 import {retrieveShows} from "../lib/show-resolvers";
 import {pickShow} from "../lib/randomisation";
 
-import {outputTests} from "../lib/output";
+import {outputTests,printShowList} from "../lib/output";
 const {printChoice,printShowListStats,calcUniqueCounts,calcItemCounts}=outputTests;
 
 describe.only("output tests",()=>{
@@ -56,8 +56,15 @@ describe.only("output tests",()=>{
             assert.isObject(res);
         });
     });
-});
 
+    describe.only("print show list",()=>{
+        it("should print out the list of shortnames in alphabetical order",async ()=>{
+            var shows:ShowsDict=retrieveShows(vidsPath);
+            var pick:Show=await pickShow(shows);
+            printShowList(shows,pick);
+        });
+    });
+});
 
 /** test print choice */
 async function printChoiceTest(vidsPath:string):Promise<void>
@@ -71,4 +78,9 @@ async function getAShow(vidsPath:string):Promise<Show>
 {
     var shows:ShowsDict=retrieveShows(vidsPath);
     return pickShow(shows);
+}
+
+function allPrintTest(vidsPath:string)
+{
+
 }

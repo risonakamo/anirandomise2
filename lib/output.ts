@@ -6,7 +6,7 @@ import textTable from "text-table";
 import {resolveShowItems} from "../lib/show-resolvers";
 
 /** print out a selected show. */
-function printChoice(show:Show):void
+export function printChoice(show:Show):void
 {
     var shortMark:string=show.isShort?"*":"";
     var selectedLine:string=`> ${ck.underline(show.shortname)}${shortMark}`;
@@ -38,7 +38,7 @@ function printChoice(show:Show):void
 
 /** given the shows and the picked show, output stats about the number of shows and items,
  * as well as the change in counts if the picked show were to be removed */
-function printShowListStats(shows:ShowsDict,choice:Show):void
+export function printShowListStats(shows:ShowsDict,choice:Show):void
 {
     var uniqueCounts:ShowCounts=calcUniqueCounts(shows);
     var itemCounts:ShowCounts=calcItemCounts(shows);
@@ -91,6 +91,33 @@ function printShowListStats(shows:ShowsDict,choice:Show):void
     ],{
         stringLength:ansiLength
     }));
+}
+
+/** print the show list */
+export function printShowList(shows:ShowsDict,pick:Show):void
+{
+    var showList:Show[]=_.sortBy(Object.values(shows),(x:Show)=>{
+        return x.shortname;
+    });
+
+    for (var x=0;x<showList.length;x++)
+    {
+        var shortSymbol:string="";
+
+        if (showList[x].isShort)
+        {
+            shortSymbol=ck.magenta("*");
+        }
+
+        var showString:string=`${showList[x].shortname}${shortSymbol}`;
+
+        if (showList[x].shortname==pick.shortname)
+        {
+            showString=ck.green(showString);
+        }
+
+        console.log(showString);
+    }
 }
 
 /** determine unique ShowCounts for shows. unique counts is the number of
