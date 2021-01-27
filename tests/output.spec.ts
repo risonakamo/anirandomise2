@@ -6,7 +6,7 @@ import {pickShow} from "../lib/randomisation";
 import {outputTests,printShowList,printShowListStats,printChoice} from "../lib/output";
 const {calcUniqueCounts,calcItemCounts}=outputTests;
 
-describe.only("output tests",()=>{
+describe("output tests",()=>{
     const vidsPath="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
 
     describe("print choice tests",async ()=>{
@@ -65,7 +65,7 @@ describe.only("output tests",()=>{
         });
     });
 
-    describe.only("all prints test",()=>{
+    describe("all prints test",()=>{
         it("should print out correct and consistent details",async ()=>{
             await allPrintTest(vidsPath);
         });
