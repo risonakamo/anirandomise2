@@ -3,8 +3,8 @@ import {assert} from "chai";
 import {retrieveShows} from "../lib/show-resolvers";
 import {pickShow} from "../lib/randomisation";
 
-import {outputTests,printShowList} from "../lib/output";
-const {printChoice,printShowListStats,calcUniqueCounts,calcItemCounts}=outputTests;
+import {outputTests,printShowList,printShowListStats,printChoice} from "../lib/output";
+const {calcUniqueCounts,calcItemCounts}=outputTests;
 
 describe.only("output tests",()=>{
     const vidsPath="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
@@ -57,11 +57,25 @@ describe.only("output tests",()=>{
         });
     });
 
-    describe.only("print show list",()=>{
+    describe("print show list",()=>{
         it("should print out the list of shortnames in alphabetical order",async ()=>{
             var shows:ShowsDict=retrieveShows(vidsPath);
             var pick:Show=await pickShow(shows);
             printShowList(shows,pick);
+        });
+    });
+
+    describe.only("all prints test",()=>{
+        it("should print out correct and consistent details",async ()=>{
+            await allPrintTest(vidsPath);
+        });
+
+        it("should print out correct and consistent details 2",async ()=>{
+            await allPrintTest(vidsPath);
+        });
+
+        it("should print out correct and consistent details 3",async ()=>{
+            await allPrintTest(vidsPath);
         });
     });
 });
@@ -80,7 +94,17 @@ async function getAShow(vidsPath:string):Promise<Show>
     return pickShow(shows);
 }
 
-function allPrintTest(vidsPath:string)
+/** test all 3 print functions */
+async function allPrintTest(vidsPath:string)
 {
+    var shows:ShowsDict=retrieveShows(vidsPath);
+    var pick:Show=await pickShow(shows);
 
+    printShowListStats(shows,pick);
+    console.log()
+
+    printShowList(shows,pick);
+    console.log();
+
+    printChoice(pick);
 }
