@@ -2,6 +2,7 @@ import mv from "move-concurrently";
 import {join} from "path";
 import retry from "async-retry";
 import ck from "chalk";
+import prompts from "prompts";
 
 /** relocate a target show to a target location. continuously retries until succeeding. */
 export async function relocateShow(show:Show,target:string):Promise<void>
@@ -24,4 +25,17 @@ export async function relocateShow(show:Show,target:string):Promise<void>
     });
 
     console.log(ck.green("moved file"));
+}
+
+/** prompt user for if should perform relocation or not. */
+export async function promptRelocate():Promise<boolean>
+{
+    var relocatePrompt:RelocatePromptAnswers=await prompts({
+        type:"confirm",
+        name:"relocate",
+        message:"relocate?",
+        initial:true
+    });
+
+    return relocatePrompt.relocate;
 }

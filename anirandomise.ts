@@ -4,7 +4,7 @@ import {retrieveShows} from "./lib/show-resolvers";
 import {pickShow} from "./lib/randomisation";
 import {fullPrint} from "./lib/output";
 import {executeShow} from "./lib/execution";
-import {relocateShow} from "./lib/relocation";
+import {relocateShow,promptRelocate} from "./lib/relocation";
 import {recordShow} from "./lib/records";
 
 async function main()
@@ -33,16 +33,7 @@ async function anirandomise(vidsPath:string,deletePath:string,logfile:string,che
     recordShow(pick,logfile);
     executeShow(pick);
 
-    var relocatePrompt:RelocatePromptAnswers=await prompts({
-        type:"confirm",
-        name:"relocate",
-        message:"relocate?",
-        initial:true
-    });
-
-    var doRelocate:boolean=relocatePrompt.relocate;
-
-    if (doRelocate)
+    if (await promptRelocate())
     {
         await relocateShow(pick,deletePath);
     }
