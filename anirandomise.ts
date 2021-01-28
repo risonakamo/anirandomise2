@@ -1,5 +1,6 @@
 import {statSync,Stats} from "fs";
 import ck from "chalk";
+import _ from "lodash";
 
 import {retrieveShows} from "./lib/show-resolvers";
 import {pickShow} from "./lib/randomisation";
@@ -24,6 +25,13 @@ async function anirandomise(vidsPath:string,deletePath:string,logfile:string,che
     confirmPaths(vidsPath,deletePath,logfile);
 
     var shows:ShowsDict=retrieveShows(vidsPath);
+
+    if (_.isEmpty(shows))
+    {
+        console.log(ck.red("no shows at target directory"));
+        return;
+    }
+
     var pick:Show=await pickShow(shows);
 
     fullPrint(shows,pick);
