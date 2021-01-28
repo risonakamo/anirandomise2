@@ -7,7 +7,7 @@ import prompts from "prompts";
 /** relocate a target show to a target location. continuously retries until succeeding. */
 export async function relocateShow(show:Show,target:string):Promise<void>
 {
-    await retry(async ()=>{
+    await retry(async (bail)=>{
         try
         {
             await mv(show.topShow.fullPath,join(target,show.topShow.filename));
@@ -15,7 +15,15 @@ export async function relocateShow(show:Show,target:string):Promise<void>
 
         catch (err)
         {
+            if (err.code=="ENOENT")
+            {
+                console.log(ck.red("target location does not exist"));
+                bail(err);
+                return;
+            }
+
             console.log(ck.red("failed to move file"));
+            console.log(err);
             throw err;
         }
     },{
