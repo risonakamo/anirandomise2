@@ -23,7 +23,6 @@ export async function relocateShow(show:Show,target:string):Promise<void>
             }
 
             console.log(ck.red("failed to move file"));
-            console.log(err);
             throw err;
         }
     },{

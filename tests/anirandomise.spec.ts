@@ -13,11 +13,11 @@ describe.only("main file tests",function(){
     const deletePath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/delete";
     const logfile:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/randomise.log";
 
-    const badvidsPath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/vids2";
+    const badvidsPath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/randomise.log";
     const baddeletePath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/delete2";
     const badlogfile:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/";
 
-    describe("run tests",()=>{
+    describe.only("run tests",()=>{
         it("should perform the full randomisatoin process with output, logging, execution, and movement",async ()=>{
             await anirandomise(vidsPath,deletePath,logfile);
         });
@@ -27,7 +27,7 @@ describe.only("main file tests",function(){
         });
     });
 
-    describe.only("error tests",()=>{
+    describe("error tests",()=>{
         it("should fail because vid path was bad",async ()=>{
             await assert.isRejected(anirandomise(badvidsPath,deletePath,logfile));
         });

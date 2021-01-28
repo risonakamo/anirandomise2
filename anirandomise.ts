@@ -1,4 +1,5 @@
-import prompts from "prompts";
+import {statSync,Stats} from "fs";
+import ck from "chalk";
 
 import {retrieveShows} from "./lib/show-resolvers";
 import {pickShow} from "./lib/randomisation";
@@ -20,6 +21,8 @@ async function main()
 /** perform anirandomise */
 async function anirandomise(vidsPath:string,deletePath:string,logfile:string,checkMode:boolean=false):Promise<void>
 {
+    confirmPaths(vidsPath,deletePath,logfile);
+
     var shows:ShowsDict=retrieveShows(vidsPath);
     var pick:Show=await pickShow(shows);
 
@@ -36,6 +39,29 @@ async function anirandomise(vidsPath:string,deletePath:string,logfile:string,che
     if (await promptRelocate())
     {
         await relocateShow(pick,deletePath);
+    }
+}
+
+/** confirm paths exist and are the correct type */
+function confirmPaths(vidsPath:string,deletePath:string,logfile:string):void
+{
+    try
+    {
+        var vidsStat:Stats=statSync(vidsPath);
+        var deleteStat:Stats=statSync(deletePath);
+        var logfileStat:Stats=statSync(logfile);
+    }
+
+    catch (err)
+    {
+        console.log(ck.red("a file path was bad"));
+        throw err;
+    }
+
+    if (!logfileStat.isFile() || !vidsStat.isDirectory() || !deleteStat.isDirectory())
+    {
+        console.log(ck.red("file/directory type error"));
+        throw "LOGERR";
     }
 }
 
