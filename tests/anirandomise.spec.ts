@@ -1,5 +1,10 @@
+import {assert,use} from "chai";
+import chaiPromise from "chai-as-promised";
+
 import {anirandomiseTest} from "../anirandomise";
 const {anirandomise}=anirandomiseTest;
+
+use(chaiPromise);
 
 describe.only("main file tests",function(){
     this.timeout(0);
@@ -8,11 +13,31 @@ describe.only("main file tests",function(){
     const deletePath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/delete";
     const logfile:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/randomise.log";
 
-    it.only("should perform the full randomisatoin process with output, logging, execution, and movement",async ()=>{
-        await anirandomise(vidsPath,deletePath,logfile);
+    const badvidsPath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/vids2";
+    const baddeletePath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/delete2";
+    const badlogfile:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/";
+
+    describe("run tests",()=>{
+        it("should perform the full randomisatoin process with output, logging, execution, and movement",async ()=>{
+            await anirandomise(vidsPath,deletePath,logfile);
+        });
+
+        it("should perform in check mode, should not open the video, should not ask to relocate, should not perform logging.",async ()=>{
+            await anirandomise(vidsPath,deletePath,logfile,true);
+        });
     });
 
-    it("should perform in check mode, should not open the video, should not ask to relocate, should not perform logging.",async ()=>{
-        await anirandomise(vidsPath,deletePath,logfile,true);
+    describe.only("error tests",()=>{
+        it("should fail because vid path was bad",async ()=>{
+            await assert.isRejected(anirandomise(badvidsPath,deletePath,logfile));
+        });
+
+        it("should fail because delete path was bad",async ()=>{
+            await assert.isRejected(anirandomise(vidsPath,baddeletePath,logfile));
+        });
+
+        it("should fail because log file path was bad",async ()=>{
+            await assert.isRejected(anirandomise(vidsPath,deletePath,badlogfile));
+        });
     });
 });
