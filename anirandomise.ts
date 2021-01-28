@@ -44,7 +44,7 @@ async function anirandomise(vidsPath:string,deletePath:string,logfile:string,che
 
     if (doRelocate)
     {
-        relocateShow(pick,deletePath);
+        await relocateShow(pick,deletePath);
     }
 }
 
