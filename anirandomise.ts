@@ -1,7 +1,11 @@
+import prompts from "prompts";
+
 import {retrieveShows} from "./lib/show-resolvers";
 import {pickShow} from "./lib/randomisation";
 import {fullPrint} from "./lib/output";
 import {executeShow} from "./lib/execution";
+import {relocateShow} from "./lib/relocation";
+import {recordShow} from "./lib/records";
 
 async function main()
 {
@@ -13,16 +17,36 @@ async function main()
     anirandomise(_vidsPath,_deletePath,_logfile);
 }
 
-async function anirandomise(vidsPath:string,deletePath:string,logfile:string):Promise<void>
+/** perform anirandomise */
+async function anirandomise(vidsPath:string,deletePath:string,logfile:string,checkMode:boolean=false):Promise<void>
 {
     var shows:ShowsDict=retrieveShows(vidsPath);
     var pick:Show=await pickShow(shows);
 
     fullPrint(shows,pick);
-    executeShow(pick);
-}
 
-main();
+    if (checkMode)
+    {
+        return;
+    }
+
+    recordShow(pick,logfile);
+    executeShow(pick);
+
+    var relocatePrompt:RelocatePromptAnswers=await prompts({
+        type:"confirm",
+        name:"relocate",
+        message:"relocate?",
+        initial:true
+    });
+
+    var doRelocate:boolean=relocatePrompt.relocate;
+
+    if (doRelocate)
+    {
+        relocateShow(pick,deletePath);
+    }
+}
 
 export const anirandomiseTest={
     anirandomise

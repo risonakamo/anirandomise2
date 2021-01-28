@@ -1,0 +1,1 @@
+type RelocatePromptAnswers=import("prompts").Answers<"relocate">
