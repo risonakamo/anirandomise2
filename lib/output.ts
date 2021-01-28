@@ -5,6 +5,18 @@ import textTable from "text-table";
 
 import {resolveShowItems} from "../lib/show-resolvers";
 
+/** perform all three show prints */
+export function fullPrint(shows:ShowsDict,pick:Show):void
+{
+    printShowListStats(shows,pick);
+    console.log();
+
+    printShowList(shows,pick);
+    console.log();
+
+    printChoice(pick);
+}
+
 /** print out a selected show. */
 export function printChoice(show:Show):void
 {

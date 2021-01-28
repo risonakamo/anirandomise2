@@ -8,7 +8,7 @@ import {relocateShow} from "../lib/relocation";
 
 chaiUse(chaiPromise);
 
-describe.only("show relocation",()=>{
+describe("show relocation",()=>{
     const vidsPath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/vids";
     const deletePath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/delete";
     const badDeletePath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/delete2";
