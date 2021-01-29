@@ -6,4 +6,13 @@ interface AnirandomiseData
 
     // the previous selection
     previousSelection:string|null
+
+    config:AnirandomiseConfig
+}
+
+interface AnirandomiseConfig
+{
+    vidsPath:string|null
+    deletePath:string|null
+    logfilePath:string|null
 }

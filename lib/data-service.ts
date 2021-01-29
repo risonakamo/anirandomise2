@@ -21,6 +21,30 @@ export async function setPreviousSelection(selection:string):Promise<void>
     return writeData(data);
 }
 
+/** set vids path */
+export async function setVidsPath(vidDir:string):Promise<void>
+{
+    var data:AnirandomiseData=getData();
+    data.config.vidsPath=vidDir;
+    return writeData(data);
+}
+
+/** set delete path */
+export async function setDeletePath(deletePath:string):Promise<void>
+{
+    var data:AnirandomiseData=getData();
+    data.config.deletePath=deletePath;
+    return writeData(data);
+}
+
+/** set log file path */
+export async function setLogFilePath(logfile:string):Promise<void>
+{
+    var data:AnirandomiseData=getData();
+    data.config.logfilePath=logfile;
+    return writeData(data);
+}
+
 /** get the shorts as a set */
 export function getShorts():Set<string>
 {
@@ -48,7 +72,12 @@ function getData():AnirandomiseData
 
     return {
         shorts:[],
-        previousSelection:null
+        previousSelection:null,
+        config:{
+            vidsPath:null,
+            deletePath:null,
+            logfilePath:null
+        }
     };
 }
 
