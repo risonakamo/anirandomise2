@@ -1,3 +1,3 @@
 import {getArgs} from "../lib/cli";
 
-getArgs();
+console.log(getArgs());
