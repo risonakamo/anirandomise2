@@ -6,7 +6,7 @@ const {anirandomise}=anirandomiseTest;
 
 use(chaiPromise);
 
-describe.only("main file tests",function(){
+describe("main file tests",function(){
     this.timeout(0);
 
     const vidsPath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/vids";
@@ -17,7 +17,7 @@ describe.only("main file tests",function(){
     const baddeletePath:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/delete2";
     const badlogfile:string="C:/Users/ktkm/Desktop/anirandomise3/testzone/";
 
-    describe.only("run tests",()=>{
+    describe("run tests",()=>{
         it("should perform the full randomisatoin process with output, logging, execution, and movement",async ()=>{
             await anirandomise(vidsPath,deletePath,logfile);
         });
