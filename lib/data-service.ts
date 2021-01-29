@@ -57,6 +57,19 @@ export function getPreviousSelection():string|null
     return getData().previousSelection;
 }
 
+/** get paths. returns null if any of the paths are null */
+export function getPathsConfig():AnirandomiseConfig|null
+{
+    var config:AnirandomiseConfig=getData().config;
+
+    if (!config.logfilePath || config.vidsPath || config.deletePath)
+    {
+        return null;
+    }
+
+    return config;
+}
+
 /** get anirandomise persisted data from json file. */
 function getData():AnirandomiseData
 {
