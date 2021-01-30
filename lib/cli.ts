@@ -4,6 +4,13 @@ import ck from "chalk";
 /** get user arguments from cli */
 export function getArgs():AnirandomiseAction
 {
+    if (process.argv.length==2)
+    {
+        return {
+            action:"randomise"
+        };
+    }
+
     var action:AnirandomiseAction={
         action:"unset"
     };
