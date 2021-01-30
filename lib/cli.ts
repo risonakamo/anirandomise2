@@ -15,7 +15,9 @@ export function getArgs():AnirandomiseAction
         action:"unset"
     };
 
-    program.usage("anirandomise3");
+    program
+        .usage("anirandomise3")
+        .version("3.0.0");
 
     program
         .command("addshort <shortname>")
