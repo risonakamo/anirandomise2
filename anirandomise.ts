@@ -52,14 +52,11 @@ async function main()
             return;
         }
 
-        if (action.action=="randomise")
+        if (action.action=="randomise" || action.action=="check")
         {
+            var check:boolean=action.action=="check"?true:false;
 
-        }
-
-        else if (action.action=="check")
-        {
-
+            anirandomise(config.vidsPath!,config.deletePath!,config.logfilePath!,check);
         }
 
         else
