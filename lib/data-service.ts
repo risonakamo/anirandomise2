@@ -2,12 +2,14 @@ import {readFileSync,writeFile} from "jsonfile";
 import {join} from "path";
 import _ from "lodash";
 import ck from "chalk";
+import normalise from "normalize-path";
 
 const _dataPath:string=join(__dirname,"../../data/data.json");
 
 /** add a short to database */
 export async function addShort(name:string):Promise<void>
 {
+    console.log("adding short",ck.magenta(name));
     var data:AnirandomiseData=getData();
     data.shorts=_.uniq([...data.shorts,name]);
     return writeData(data);
@@ -24,24 +26,27 @@ export async function setPreviousSelection(selection:string):Promise<void>
 /** set vids path */
 export async function setVidsPath(vidDir:string):Promise<void>
 {
+    console.log("setting vids dir to",vidDir);
     var data:AnirandomiseData=getData();
-    data.config.vidsPath=vidDir;
+    data.config.vidsPath=normalise(vidDir);
     return writeData(data);
 }
 
 /** set delete path */
 export async function setDeletePath(deletePath:string):Promise<void>
 {
+    console.log("setting delete dir to",deletePath);
     var data:AnirandomiseData=getData();
-    data.config.deletePath=deletePath;
+    data.config.deletePath=normalise(deletePath);
     return writeData(data);
 }
 
 /** set log file path */
 export async function setLogFilePath(logfile:string):Promise<void>
 {
+    console.log("setting log file path to",logfile);
     var data:AnirandomiseData=getData();
-    data.config.logfilePath=logfile;
+    data.config.logfilePath=normalise(logfile);
     return writeData(data);
 }
 
@@ -62,7 +67,7 @@ export function getPathsConfig():AnirandomiseConfig|null
 {
     var config:AnirandomiseConfig=getData().config;
 
-    if (!config.logfilePath || config.vidsPath || config.deletePath)
+    if (!config.logfilePath || !config.vidsPath || !config.deletePath)
     {
         return null;
     }

@@ -1,4 +1,3 @@
-import {statSync,Stats} from "fs";
 import ck from "chalk";
 import _ from "lodash";
 
@@ -8,22 +7,71 @@ import {fullPrint} from "./lib/output";
 import {executeShow} from "./lib/execution";
 import {relocateShow,promptRelocate} from "./lib/relocation";
 import {recordShow} from "./lib/records";
+import {getArgs} from "./lib/cli";
+import {setVidsPath,setDeletePath,setLogFilePath,addShort,getPathsConfig} from "./lib/data-service";
+import {confirmPathsConfig} from "./lib/verification";
 
 async function main()
 {
-    const _vidsPath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\vids";
-    const _deletePath:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\delete";
+    var action:AnirandomiseAction=getArgs();
 
-    const _logfile:string="C:\\Users\\ktkm\\Desktop\\anirandomise3\\testzone\\randomise.log";
+    if (action.action=="register")
+    {
+        var registerAction:RegisterAction=action as RegisterAction;
 
-    anirandomise(_vidsPath,_deletePath,_logfile);
+        switch (registerAction.type)
+        {
+            case "vids":
+            setVidsPath(registerAction.path);
+            break;
+
+            case "delete":
+            setDeletePath(registerAction.path);
+            break;
+
+            case "logfile":
+            setLogFilePath(registerAction.path);
+            break;
+        }
+    }
+
+    else if (action.action=="addshort")
+    {
+        var addShortAction:AddShortAction=action as AddShortAction;
+
+        addShort(addShortAction.shortName);
+    }
+
+    else
+    {
+        var config:AnirandomiseConfig|null=getPathsConfig();
+
+        if (!config || !confirmPathsConfig(config))
+        {
+            console.log(ck.red("paths not configured or are invalid! use register command to register required paths"));
+            return;
+        }
+
+        if (action.action=="randomise")
+        {
+
+        }
+
+        else if (action.action=="check")
+        {
+
+        }
+
+        else
+        {
+            console.log(ck.red("invalid action???"));
+        }
+    }
 }
 
 /** perform anirandomise */
 async function anirandomise(vidsPath:string,deletePath:string,logfile:string,checkMode:boolean=false):Promise<void>
 {
-    confirmPaths(vidsPath,deletePath,logfile);
-
     var shows:ShowsDict=retrieveShows(vidsPath);
 
     if (_.isEmpty(shows))
@@ -50,29 +98,11 @@ async function anirandomise(vidsPath:string,deletePath:string,logfile:string,che
     }
 }
 
-/** confirm paths exist and are the correct type */
-function confirmPaths(vidsPath:string,deletePath:string,logfile:string):void
-{
-    try
-    {
-        var vidsStat:Stats=statSync(vidsPath);
-        var deleteStat:Stats=statSync(deletePath);
-        var logfileStat:Stats=statSync(logfile);
-    }
-
-    catch (err)
-    {
-        console.log(ck.red("a file path was bad"));
-        throw err;
-    }
-
-    if (!logfileStat.isFile() || !vidsStat.isDirectory() || !deleteStat.isDirectory())
-    {
-        console.log(ck.red("file/directory type error"));
-        throw "LOGERR";
-    }
-}
-
 export const anirandomiseTest={
     anirandomise
 };
+
+if (require.main)
+{
+    main();
+}
