@@ -17,7 +17,7 @@ export function getArgs():AnirandomiseAction
 
     program
         .usage("anirandomise3")
-        .version("3.0.0");
+        .version("3.0.1");
 
     program
         .command("addshort <shortname>")

@@ -35,7 +35,7 @@ export async function recordShow(show:Show,logFile:string):Promise<void>
     }
 
     setPreviousSelection(show.shortname);
-    return prependFile(logFile,`${customTimeStamp()} ${show.topShow.filename}\n`);
+    return prependFile(logFile,`${customTimeStamp()} ${show.topShow.filename}\r\n`);
 }
 
 /** get timestamp string for current time*/
