@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "run": "node build/anirandomise",
-    "run-dev": "npm run build && npm run run",
+    "run-dev": "npm run build && npm run run --",
     "test": "npm run build && npm run test-no-build",
     "test-no-build":"mocha build/tests"
   },

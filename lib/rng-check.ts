@@ -4,7 +4,19 @@ import ck from "chalk";
 
 import {pickShow} from "./randomisation";
 import {ansiLength} from "./output";
+import {retrieveShows} from "./show-resolvers";
+import {getPreviousSelection} from "./data-service";
 
+/** perform rng check on target directory with certain number of iterations. */
+export async function rngCheckWrapFull(vidspath:string,iterations:number):Promise<void>
+{
+    var shows:ShowsDict=await retrieveShows(vidspath);
+    var lastShow:string=getPreviousSelection() || "<none>";
+
+    return rngCheck(shows,lastShow,iterations);
+}
+
+/** perform rng check using provided shows and the last show. */
 export async function rngCheck(shows:ShowsDict,lastshow:string,iterations:number):Promise<void>
 {
     var counts:ShowNameCounts=_.mapValues(shows,()=>{

@@ -84,6 +84,23 @@ export function getArgs():AnirandomiseAction
             };
         });
 
+    program
+        .command("rngtest <iterations>")
+        .description("run rng test")
+        .action((iterations:string)=>{
+            var parsedIterations:number=parseInt(iterations);
+            if (!parsedIterations)
+            {
+                console.log(ck.red("failed to parse iterations"));
+                return;
+            }
+
+            action={
+                action:"rngtest",
+                iterations:parsedIterations
+            } as TestRngAction;
+        });
+
     program.parse(process.argv);
     return action;
 }

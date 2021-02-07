@@ -10,6 +10,7 @@ import {recordShow} from "./lib/records";
 import {getArgs} from "./lib/cli";
 import {setVidsPath,setDeletePath,setLogFilePath,addShort,getPathsConfig} from "./lib/data-service";
 import {confirmPathsConfig} from "./lib/verification";
+import {rngCheckWrapFull} from "./lib/rng-check";
 
 async function main()
 {
@@ -57,6 +58,12 @@ async function main()
             var check:boolean=action.action=="check"?true:false;
 
             anirandomise(config.vidsPath!,config.deletePath!,config.logfilePath!,check);
+        }
+
+        else if (action.action=="rngtest")
+        {
+            var rngCheckAction=action as TestRngAction;
+            rngCheckWrapFull(config.vidsPath!,rngCheckAction.iterations);
         }
 
         else
