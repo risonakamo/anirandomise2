@@ -35,9 +35,22 @@ export async function rngCheck(shows:ShowsDict,lastshow:string,iterations:number
         return x.count;
     }));
 
-    var showPickStatsTableRows:(string|number)[][]=_.map(showPickStats,(x:RngCheckShowStats):(string|number)[]=>{
+    var showPickStatsTableRows:(string|number)[][]=_.map(showPickStats,
+    (x:RngCheckShowStats,i:number,a:RngCheckShowStats[]):(string|number)[]=>{
+        var name:string=x.name;
+
+        if (i<=2)
+        {
+            name=ck.green(name);
+        }
+
+        else if (i>=a.length-3)
+        {
+            name=ck.red(name);
+        }
+
         return [
-            x.name,
+            name,
             x.count,
             x.pickrate
         ];

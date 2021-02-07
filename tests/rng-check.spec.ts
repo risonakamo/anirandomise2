@@ -5,11 +5,16 @@ import {rngCheck} from "../lib/rng-check";
 
 describe.only("rng check module tests",()=>{
     const vidsPath="C:/Users/ktkm/Desktop/videos/vids";
+    const iterations=1000;
+    const testcount=3;
 
-    it("should perform rng check",async ()=>{
-        var shows:ShowsDict=await retrieveShows(vidsPath);
-        var previousShow:string=getPreviousSelection() || "<none>";
+    for (var x=0;x<testcount;x++)
+    {
+        it(`should perform rng check ${x+1}`,async ()=>{
+            var shows:ShowsDict=await retrieveShows(vidsPath);
+            var previousShow:string=getPreviousSelection() || "<none>";
 
-        rngCheck(shows,previousShow,500);
-    });
+            rngCheck(shows,previousShow,iterations);
+        });
+    }
 });
