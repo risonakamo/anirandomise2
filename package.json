@@ -5,8 +5,7 @@
     "build": "tsc",
     "run": "node build/anirandomise",
     "run-dev": "npm run build && npm run run",
-    "test": "npm run build && mocha build/tests",
-    "test-cli":"npm run build && node build/tests/cli.spec.js"
+    "test": "npm run build && mocha build/tests"
   },
   "dependencies": {
     "async-retry": "^1.3.1",
