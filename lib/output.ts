@@ -132,6 +132,12 @@ export function printShowList(shows:ShowsDict,pick:Show):void
     }
 }
 
+/** return length of string with colours */
+export function ansiLength(input:string):number
+{
+    return stripAnsi(input).length;
+}
+
 /** determine unique ShowCounts for shows. unique counts is the number of
  * unique shortnames appearing */
 function calcUniqueCounts(shows:ShowsDict):ShowCounts
@@ -171,12 +177,6 @@ function calcItemCounts(shows:ShowsDict):ShowCounts
     itemCounts.shows=itemCounts.total-itemCounts.shorts;
 
     return itemCounts;
-}
-
-/** return length of string with colours */
-function ansiLength(input:string):number
-{
-    return stripAnsi(input).length;
 }
 
 /** diff show counts into strings */

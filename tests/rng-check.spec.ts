@@ -10,6 +10,6 @@ describe.only("rng check module tests",()=>{
         var shows:ShowsDict=await retrieveShows(vidsPath);
         var previousShow:string=getPreviousSelection() || "<none>";
 
-        rngCheck(shows,previousShow,10);
+        rngCheck(shows,previousShow,500);
     });
 });
