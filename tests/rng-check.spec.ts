@@ -5,7 +5,7 @@ import {rngCheck} from "../lib/rng-check";
 
 describe.only("rng check module tests",()=>{
     const vidsPath="C:/Users/ktkm/Desktop/videos/vids";
-    const iterations=1000;
+    const iterations=5000;
     const testcount=3;
 
     for (var x=0;x<testcount;x++)
@@ -14,7 +14,7 @@ describe.only("rng check module tests",()=>{
             var shows:ShowsDict=await retrieveShows(vidsPath);
             var previousShow:string=getPreviousSelection() || "<none>";
 
-            rngCheck(shows,previousShow,iterations);
+            await rngCheck(shows,previousShow,iterations);
         });
     }
 });
